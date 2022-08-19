@@ -4,6 +4,8 @@ import 'homeTabView.dart';
 import 'followingTabView.dart';
 import 'myPostsTabView.dart';
 import 'viewArticle.dart';
+import 'apiCalls.dart';
+import 'consts.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 //import 'package:csv_reader/csv_reader.dart';
@@ -11,7 +13,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 
-HtmlEditorController controller = HtmlEditorController();
+HtmlEditorController htmlcontroller = HtmlEditorController();
 
 void main() => runApp(MyApp());
 
@@ -89,7 +91,12 @@ class CreateArticle extends StatefulWidget {
 
 class CreateArticleState extends State<CreateArticle> {
   final _formKey1 = GlobalKey<FormState>();
-
+  Map<String, dynamic> newArticle = {
+    'heading': '',
+    'subHeading': '',
+    'detail': '',
+    'tags': '',
+  };
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -114,6 +121,7 @@ class CreateArticleState extends State<CreateArticle> {
                     if (value == null || value.isEmpty) {
                       return "Heading can't be empty";
                     }
+                    newArticle['heading'] = value;
                     //String? inpHtml = await controller.getText();
                     return null;
                   },
@@ -137,6 +145,7 @@ class CreateArticleState extends State<CreateArticle> {
                     if (value == null || value.isEmpty) {
                       //return "Heading can't be empty";
                     }
+                    newArticle['subHeading'] = value;
                     //String? inpHtml = await controller.getText();
                     return null;
                   },
@@ -152,7 +161,7 @@ class CreateArticleState extends State<CreateArticle> {
               ),
             ),
             HtmlEditor(
-              controller: controller, //required
+              controller: htmlcontroller, //required
               htmlEditorOptions: HtmlEditorOptions(
                 hint: "Write as much as you want :)",
                 //initalText: "text content initial, if any",
@@ -186,6 +195,7 @@ class CreateArticleState extends State<CreateArticle> {
                     if (value == null || value.isEmpty) {
                       //return "Heading can't be empty";
                     }
+                    newArticle['tags'] = value;
                     //String? inpHtml = await controller.getText();
                     return null;
                   },
@@ -208,10 +218,13 @@ class CreateArticleState extends State<CreateArticle> {
           onPressed: () async {
             // Add your onPressed code here!
             print('done pressed');
-            String inpHtml = await controller.getText();
+            String inpHtml = await htmlcontroller.getText();
+            newArticle['detail'] = inpHtml;
             print(inpHtml);
             if (_formKey1.currentState!.validate()) {
               print("form valid");
+              //print(newArticle['details']);
+              postArticle(newArticle);
             }
             //Navigator.pushNamed(context, '/createArticle');
           },
