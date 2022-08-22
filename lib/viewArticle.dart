@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'apiCalls.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/parser.dart' as htmlparser;
+import 'package:html/dom.dart' as dom;
 
 class ViewArticle extends StatefulWidget {
   //const ViewArticle({super.key});
@@ -40,8 +44,10 @@ class ViewArticleState extends State<ViewArticle> {
               Padding(padding: EdgeInsets.symmetric(vertical: 10)),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
+                child:Align(
+          alignment: Alignment.centerLeft,
                 child: Text(
-                  articleList[itemIndex + 1][3],
+                  articleList[itemIndex + 1][2],
                   style: TextStyle(
                       fontSize: 26,
                       //color: Colors.white,
@@ -56,13 +62,15 @@ class ViewArticleState extends State<ViewArticle> {
                             offset: Offset(1, .5),
                             blurRadius: 10)
                       ]),
-                ),
+                ),),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Align(
+          alignment: Alignment.centerLeft,
                 child: Text(
-                  articleList[itemIndex + 1][4],
+                  articleList[itemIndex + 1][3],
                   style: TextStyle(
                       fontSize: 18,
                       //color: Colors.white,
@@ -77,7 +85,7 @@ class ViewArticleState extends State<ViewArticle> {
                             offset: Offset(1, .5),
                             blurRadius: 10)
                       ]),
-                ),
+                ),),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               Padding(
@@ -86,9 +94,9 @@ class ViewArticleState extends State<ViewArticle> {
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "by " +
-                        articleList[itemIndex + 1][1] +
+                        articleList[itemIndex + 1][1].toString() +
                         "  |  " +
-                        articleList[itemIndex + 1][2],
+                        articleList[itemIndex + 1][11].toString(),
                     style: TextStyle(
                         fontSize: 18,
                         //color: Colors.white,
@@ -108,11 +116,31 @@ class ViewArticleState extends State<ViewArticle> {
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 15)),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: EdgeInsets.symmetric(horizontal: 1),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
-                    articleList[itemIndex + 1][7],
+                  child: FutureBuilder(
+                  future: fetchArticleDetail(articleList[itemIndex + 1][0]),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: Text('loading...'));
+                    } else {
+                      if (snapshot.hasError)
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      else
+                        print('i am here 123');
+                      //print(snapshot.data[1][4]);
+                      print(snapshot.data.length);
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Html(
+                          data: snapshot.data[1][1],
+                        ),
+                      );
+                    }
+                    },),
+                    /* child: Text(
+                    articleList[itemIndex + 1][12],
                     style: TextStyle(
                         fontSize: 16,
                         //color: Colors.white,
@@ -127,7 +155,7 @@ class ViewArticleState extends State<ViewArticle> {
                               offset: Offset(1, .5),
                               blurRadius: 10)
                         ]),
-                  ),
+                  ),*/
                 ),
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
@@ -145,7 +173,7 @@ class ViewArticleState extends State<ViewArticle> {
                           alignment: Alignment.centerLeft,
                           child: Text(
                             " " +
-                                articleList[itemIndex + 1][5]
+                                articleList[itemIndex + 1][4]
                                     .toString(),
                             style: TextStyle(
                                 fontSize: 16,
