@@ -5,6 +5,11 @@ import 'followingTabView.dart';
 import 'myPostsTabView.dart';
 import 'viewArticle.dart';
 import 'apiCalls.dart';
+import 'login.dart';
+import 'myDrawer.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'consts.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
@@ -14,17 +19,39 @@ import 'dart:io';
 import 'dart:async';
 
 HtmlEditorController htmlcontroller = HtmlEditorController();
+String jwtGlobal = '';
 
-void main() => runApp(MyApp());
-
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  runApp(MyApp());
+}
 class MyApp extends StatelessWidget {
   //var test = fetchArtList();
   @override
   Widget build(BuildContext context) {
+    Widget firstWidget;
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      print("already logged in");
+      print(user);
+      print(user.uid);
+      final jwt = getJwt(user);
+      print(jwt);
+      firstWidget = HomePage();
+    }
+    else {
+      firstWidget = AuthScreen();
+    }
+
     return MaterialApp(
       title: 'AI Art',
       routes: {
-        '/': (context) => HomePage(),
+        '/': (context) => firstWidget,
+        '/login': (context) => AuthScreen(),
+        '/home': (context) => HomePage(),
         '/createArticle': (context) => CreateArticle(),
         '/viewArticle': (context) => ViewArticle(),
       },
@@ -38,11 +65,14 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatelessWidget {
+  var data = new HomeTabView(7);
   @override
   Widget build(BuildContext context) {
+    print(data.test);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        endDrawer: MyDrawer(),
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: const Text(
@@ -59,7 +89,7 @@ class HomePage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            HomeTabView(),
+            HomeTabView(9),
             FollowingTabView(),
             MyPostsTabView(),
           ],
@@ -236,4 +266,12 @@ class CreateArticleState extends State<CreateArticle> {
       ),
     );
   }
+}
+
+
+Future<String> getJwt(user) async {
+  final jwt = await user.getIdToken();
+  //print("JWT is " + jwt);
+  String jwt1 = jwt;
+  return jwt1;
 }

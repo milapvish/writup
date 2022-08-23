@@ -5,8 +5,13 @@ import 'package:html/parser.dart' as htmlparser;
 import 'package:html/dom.dart' as dom;
 
 class HomeTabView extends StatelessWidget {
+  var test;
+  HomeTabView(this.test);
+
   @override
   Widget build(BuildContext context) {
+    print("here aaya");
+    print(test);
     return FutureBuilder(
       future: fetchArticles(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
