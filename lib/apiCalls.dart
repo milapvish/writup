@@ -37,14 +37,20 @@ Future<List<List<dynamic>>> fetchArticles() async {
 }
 
 Future<String> postArticle(Map newArticle) async {
-  print(newArticle['detail']);
-  print("idhar bhi jwt "+ jwtGlobal);
+
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
   String rawJson = jsonEncode(newArticle);
   //String encoded = Utf8Encoder().convert(rawJson);
   var url = baseBackendUrl + '/createArticle';
   final response = await http.post(Uri.parse(url),
-    headers: {"Content-Type": "application/json"},
-    body: rawJson
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
   );
   print("getting response for post");
   print (response.statusCode);
@@ -53,11 +59,19 @@ Future<String> postArticle(Map newArticle) async {
 }
 
 
-Future<List<List<dynamic>>> fetchArticleDetail( int id ) async {
-  String rawJson = jsonEncode(id);
+Future<List<List<dynamic>>> fetchArticleDetail( int postid ) async {
+
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode(postid);
   var url = baseBackendUrl + '/fetchArticleDetail';
   final response = await http.post(Uri.parse(url),
-      headers: {"Content-Type": "application/json"},
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
       body: rawJson
   );
   String decoded = Utf8Decoder().convert(response.bodyBytes);
@@ -69,3 +83,37 @@ Future<List<List<dynamic>>> fetchArticleDetail( int id ) async {
   return rowsAsListOfValues;
 }
 
+Future<List<List<dynamic>>> createAccount(String email, String name) async {
+  print(email);
+  print(name);
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['email'] = email;
+  jsonMap['name'] = name;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);//
+
+  var url = baseBackendUrl + '/createAccount';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}

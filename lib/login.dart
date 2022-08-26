@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'main.dart';
+import 'apiCalls.dart';
 
 class AuthScreen extends StatefulWidget {
   //const AuthScreen({Key key}) : super(key: key);
@@ -29,7 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
   void _submitAuthForm(
       String email,
       String password,
-      String userName,
+      String name,
       bool isLogin,
       BuildContext ctx,
       ) async {
@@ -47,6 +48,8 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         userCredential = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        await createAccount(email, name);
+        print("now pushing home page");
         Navigator.pushNamed(context, '/home').then(onGoBack);
       }
     } on PlatformException catch (err) {
@@ -90,7 +93,7 @@ class AuthForm extends StatefulWidget {
   final void Function(
       String email,
       String password,
-      String userName,
+      String name,
       bool isLogin,
       BuildContext ctx,
       ) submitFn;
@@ -103,7 +106,7 @@ class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   var _isLogin = true;
   var _userEmail = '';
-  var _userName = '';
+  var _name = '';
   var _userPassword = '';
 
   void _trySubmit() {
@@ -113,7 +116,7 @@ class _AuthFormState extends State<AuthForm> {
     if (isValid) {
       print("auth form valid");
       _formKey.currentState!.save();
-      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _userName.trim(),
+      widget.submitFn(_userEmail.trim(), _userPassword.trim(), _name.trim(),
           _isLogin, context);
     }
   }
@@ -202,9 +205,9 @@ class _AuthFormState extends State<AuthForm> {
                           if (!_isLogin) const SizedBox(height: 20.0),
                           if (!_isLogin)
                             TextFormField(
-                              key: const ValueKey('username'),
+                              key: const ValueKey('name'),
                               decoration: const InputDecoration(
-                                  labelText: 'USERNAME',
+                                  labelText: 'Full Name',
                                   labelStyle: TextStyle(
                                       fontFamily: 'RobotoCondensed',
                                       fontWeight: FontWeight.bold,
@@ -217,13 +220,13 @@ class _AuthFormState extends State<AuthForm> {
                               enableSuggestions: false,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter a username';
+                                  return 'Please enter a name';
                                 }
                                 return null;
                               },
                               onSaved: (value) {
                                 if (value != null) {
-                                  _userName = value;
+                                  _name = value;
                                 };
                               },
                               // ignore: missing_return

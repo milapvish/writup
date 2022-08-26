@@ -103,7 +103,7 @@ class HomeTabView extends StatelessWidget {
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 "by " +
-                                    snapshot.data[index + 1][1].toString() +
+                                    snapshot.data[index + 1][13].toString() +
                                     "  |  " +
                                     snapshot.data[index + 1][11].toString(),
                                 style: TextStyle(
