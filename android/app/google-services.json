@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "437171790000",
+    "project_id": "writup-hermit-owl",
+    "storage_bucket": "writup-hermit-owl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437171790000:android:f811bd58ff50f1bce19b75",
+        "android_client_info": {
+          "package_name": "com.example.writup"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437171790000-0d9tjfr36t5g704o9hage0vu37b7bkqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC54-VUU0ESQ_YC_9MMN2V8j2IrPRliQPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437171790000-0d9tjfr36t5g704o9hage0vu37b7bkqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
