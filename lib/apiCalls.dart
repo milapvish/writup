@@ -117,3 +117,34 @@ Future<List<List<dynamic>>> createAccount(String email, String name) async {
 
   return rowsAsListOfValues;
 }
+
+Future<List<List<dynamic>>> postRating(int post_id, double rating) async {
+  print(post_id);
+  print(rating);
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['post_id'] = post_id;
+  jsonMap['rating'] = rating;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);//
+
+  var url = baseBackendUrl + '/postRating';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  return rowsAsListOfValues;
+}

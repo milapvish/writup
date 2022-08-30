@@ -247,11 +247,18 @@ class ViewArticleState extends State<ViewArticle> {
                 onRatingUpdate: (myrating) {
                   print("my rating is : ");
                   print(myrating);
-                  articleList[itemIndex + 1][14] = myrating;
-                  _ratingNotifier.value = (_ratingNotifier.value + myrating)/2;
+                  var prevMyrating = articleList[itemIndex + 1][14];
+                  if (prevMyrating == 0) {    // not rated previously
+                    _ratingNotifier.value = (_ratingNotifier.value * _nbrRatingsNotifier.value + myrating)/(_nbrRatingsNotifier.value + 1);
+                    _nbrRatingsNotifier.value = _nbrRatingsNotifier.value + 1;
+                  }
+                  else {
+                    _ratingNotifier.value = (_ratingNotifier.value * _nbrRatingsNotifier.value - prevMyrating + myrating)/_nbrRatingsNotifier.value;
+                  }
                   articleList[itemIndex + 1][4] = _ratingNotifier.value;
-                  _nbrRatingsNotifier.value = _nbrRatingsNotifier.value + 1;
                   articleList[itemIndex + 1][5] = _nbrRatingsNotifier.value;
+                  articleList[itemIndex + 1][14] = myrating;
+                  postRating(articleList[itemIndex + 1][0], myrating);
                 },
               ),
               Padding(padding: EdgeInsets.symmetric(vertical: 10)),
