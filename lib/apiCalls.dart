@@ -148,3 +148,34 @@ Future<List<List<dynamic>>> postRating(int post_id, double rating) async {
 
   return rowsAsListOfValues;
 }
+
+Future<List<List<dynamic>>> toggleBookmark(int post_id, bool bookmark) async {
+  print(post_id);
+  print(bookmark);
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['post_id'] = post_id;
+  jsonMap['bookmark'] = bookmark;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);//
+
+  var url = baseBackendUrl + '/toggleBookmark';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  return rowsAsListOfValues;
+}
