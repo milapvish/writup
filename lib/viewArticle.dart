@@ -4,6 +4,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/parser.dart' as htmlparser;
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
+
 
 class ViewArticle extends StatefulWidget {
   //const ViewArticle({super.key});
@@ -113,16 +115,54 @@ class ViewArticleState extends State<ViewArticle> {
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                      "by " +
-                          articleList[itemIndex + 1][13].toString() +
-                          "  |  " +
-                          articleList[itemIndex + 1][11].toString(),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.black54,
+                            child: Text(articleList[itemIndex + 1][13].toString()[0]),
+                          ),
+                          TextButton(
+                            onPressed: () async {
+                              print("pressing writer name ");
+                              Navigator.pushNamed(
+                                  context,
+                                  '/publicProfile',
+                                  arguments: {
+                                  'userId': articleList[itemIndex + 1][1],
+                                  'userName': articleList[itemIndex + 1][13].toString(),
+                                  },);
+                            },
+                              child: Text(articleList[itemIndex + 1][13].toString(),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500,
+                                    //fontStyle: FontStyle.italic,
+                                    //letterSpacing: 5,
+                                    //wordSpacing: 2,
+                                    //backgroundColor: Colors.yellow,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white70,
+                                          offset: Offset(1, .5),
+                                          blurRadius: 10)
+                                    ]),),),
+                          ]
+                    ),
+                  ),
+                ),
+                Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(DateFormat.yMMMd().format(DateTime.parse(articleList[itemIndex + 1][11])),
                       style: TextStyle(
-                          fontSize: 18,
-                          //color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                          //fontStyle: FontStyle.italic,
+                          fontSize: 16,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w400,
+                          fontStyle: FontStyle.italic,
                           //letterSpacing: 5,
                           //wordSpacing: 2,
                           //backgroundColor: Colors.yellow,
@@ -131,8 +171,126 @@ class ViewArticleState extends State<ViewArticle> {
                                 color: Colors.white70,
                                 offset: Offset(1, .5),
                                 blurRadius: 10)
-                          ]),
-                    ),
+                          ]),),),),
+                Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          Icon(Icons.star),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: ValueListenableBuilder(
+                              valueListenable: _ratingNotifier,
+                              builder: (context, value, _) {
+                                if (value == null) {
+                                  value = 0;
+                                }
+                                String valueStr = value.toString();
+                                if (valueStr.length > 4) {
+                                  valueStr = valueStr.substring(0, 4);
+                                }
+                                return Text(
+                                  " " + (valueStr),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      //color: Colors.white,
+                                      fontWeight: FontWeight.w400,
+                                      //fontStyle: FontStyle.italic,
+                                      //letterSpacing: 5,
+                                      //wordSpacing: 2,
+                                      //backgroundColor: Colors.yellow,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.white70,
+                                            offset: Offset(1, .5),
+                                            blurRadius: 10)
+                                      ]),
+                                );
+                              },
+                            ),
+                          ),
+                          Text(
+                            " by",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.italic,
+                                //letterSpacing: 3,
+                                //wordSpacing: 2,
+                                //backgroundColor: Colors.yellow,
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.white70,
+                                      offset: Offset(1, .5),
+                                      blurRadius: 10)
+                                ]),
+                          ),
+                          ValueListenableBuilder(
+                            valueListenable: _nbrRatingsNotifier,
+                            builder: (context, value, _) {
+                              return Text(
+                                " " + value.toString(),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    //color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    //fontStyle: FontStyle.italic,
+                                    //letterSpacing: 5,
+                                    //wordSpacing: 2,
+                                    //backgroundColor: Colors.yellow,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white70,
+                                          offset: Offset(1, .5),
+                                          blurRadius: 10)
+                                    ]),
+                              );
+                            },),
+                          Text(
+                            " readers",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.italic,
+                                //letterSpacing: 3,
+                                //wordSpacing: 2,
+                                //backgroundColor: Colors.yellow,
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.white70,
+                                      offset: Offset(1, .5),
+                                      blurRadius: 10)
+                                ]),
+                          ),
+                        ],
+                      ),
+                      Spacer(),
+                      Spacer(),
+                      Spacer(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          ValueListenableBuilder(
+                            valueListenable: _bookmarkNotifier,
+                            builder: (context, value, _) {
+                              return IconButton(
+                                onPressed: () {
+                                  _bookmarkNotifier.value = !_bookmarkNotifier.value;
+                                  articleList[itemIndex + 1][15] = _bookmarkNotifier.value.toString();
+                                  toggleBookmark(articleList[itemIndex + 1][0], _bookmarkNotifier.value);
+                                },
+                                icon: _bookmarkNotifier.value == true ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border),);
+                            },),
+                          Icon(Icons.share_rounded),
+                        ],),
+                    ],
                   ),
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 15)),
@@ -453,3 +611,4 @@ class ArticleDetailHtml extends StatelessWidget {
     );
   }
 }
+

@@ -179,3 +179,38 @@ Future<List<List<dynamic>>> toggleBookmark(int post_id, bool bookmark) async {
 
   return rowsAsListOfValues;
 }
+
+
+Future<List<List<dynamic>>> fetchArticlesByUserID(int userId) async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['userId'] = userId;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);
+
+  var url = baseBackendUrl + '/fetchArticlesByUserID';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
