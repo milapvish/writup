@@ -87,9 +87,9 @@ class ArticleListViewCommon extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           "by " +
-                              articleList[index + 1][13].toString() +
+                              articleList[index + 1][8].toString() +
                               "  |  " +
-                              articleList[index + 1][11].toString(),
+                              articleList[index + 1][6].toString(),
                           style: TextStyle(
                               fontSize: 18,
 //color: Colors.white,
@@ -113,7 +113,7 @@ class ArticleListViewCommon extends StatelessWidget {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Html(
-                          data: articleList[index + 1][12] + '...',
+                          data: articleList[index + 1][7] + '...',
                         ),
                                 /*child: Text(
                                 articleList[index + 1]

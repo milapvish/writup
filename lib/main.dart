@@ -8,6 +8,7 @@ import 'apiCalls.dart';
 import 'login.dart';
 import 'myDrawer.dart';
 import 'publicProfile.dart';
+import 'hashTagPosts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -56,6 +57,7 @@ class MyApp extends StatelessWidget {
         '/createArticle': (context) => CreateArticle(),
         '/viewArticle': (context) => ViewArticle(),
         '/publicProfile': (context) => PublicProfile(),
+        '/hashTagPosts': (context) => HashTagPosts(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,

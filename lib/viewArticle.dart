@@ -6,7 +6,6 @@ import 'package:html/dom.dart' as dom;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 
-
 class ViewArticle extends StatefulWidget {
   //const ViewArticle({super.key});
   //final arg = ModalRoute.of(context)!.settings.arguments as Map;
@@ -29,6 +28,8 @@ class ViewArticleState extends State<ViewArticle> {
     print("here goes article list ");
     print(articleList.length);
     print(thisIndex);
+    final _followButtonTextNotifier = ValueNotifier<String>("Follow");
+    final _followButtonColorNotifier = ValueNotifier<Color>(Colors.black87);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -50,11 +51,11 @@ class ViewArticleState extends State<ViewArticle> {
           print(articleList[itemIndex + 1][5]);
           _nbrRatingsNotifier.value = articleList[itemIndex + 1][5].toInt();
           print("aakhir hai kitna " + articleList[itemIndex + 1][4].toString());
-          print("bookmark value " + articleList[itemIndex + 1][15]);
-          if (articleList[itemIndex + 1][15] == 'True' || articleList[itemIndex + 1][15] == 'true') {
+          print("bookmark value " + articleList[itemIndex + 1][10]);
+          if (articleList[itemIndex + 1][10] == 'True' ||
+              articleList[itemIndex + 1][10] == 'true') {
             _bookmarkNotifier.value = true;
-          }
-          else {
+          } else {
             _bookmarkNotifier.value = false;
           }
           print("bookmark value " + _bookmarkNotifier.value.toString());
@@ -120,44 +121,113 @@ class ViewArticleState extends State<ViewArticle> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundColor: Colors.black54,
-                            child: Text(articleList[itemIndex + 1][13].toString()[0]),
+                            child: Text(
+                                articleList[itemIndex + 1][8].toString()[0]),
                           ),
                           TextButton(
                             onPressed: () async {
                               print("pressing writer name ");
                               Navigator.pushNamed(
-                                  context,
-                                  '/publicProfile',
-                                  arguments: {
+                                context,
+                                '/publicProfile',
+                                arguments: {
                                   'userId': articleList[itemIndex + 1][1],
-                                  'userName': articleList[itemIndex + 1][13].toString(),
-                                  },);
+                                  'userName':
+                                      articleList[itemIndex + 1][8].toString(),
+                                },
+                              );
                             },
-                              child: Text(articleList[itemIndex + 1][13].toString(),
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                    //fontStyle: FontStyle.italic,
-                                    //letterSpacing: 5,
-                                    //wordSpacing: 2,
-                                    //backgroundColor: Colors.yellow,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.white70,
-                                          offset: Offset(1, .5),
-                                          blurRadius: 10)
-                                    ]),),),
-                          ]
-                    ),
+                            child: Text(
+                              articleList[itemIndex + 1][8].toString(),
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  //fontStyle: FontStyle.italic,
+                                  //letterSpacing: 5,
+                                  //wordSpacing: 2,
+                                  //backgroundColor: Colors.yellow,
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.white70,
+                                        offset: Offset(1, .5),
+                                        blurRadius: 10)
+                                  ]),
+                            ),
+                          ),
+                          FutureBuilder(
+                              future: checkUserFollow(
+                                  articleList[itemIndex + 1][1]),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(child: Text('loading...'));
+                                } else {
+                                  if (snapshot.hasError)
+                                    return Center(
+                                        child:
+                                            Text('Error: ${snapshot.error}'));
+                                  else
+                                    print('i am here');
+                                  //print(snapshot.data[1][4]);
+                                  print(snapshot.data.length);
+                                  _followButtonTextNotifier.value =
+                                      snapshot.data;
+                                  if (_followButtonTextNotifier.value ==
+                                      "Follow") {
+                                    _followButtonColorNotifier.value =
+                                        Colors.black87;
+                                  } else {
+                                    _followButtonColorNotifier.value =
+                                        Colors.black54;
+                                  }
+                                  return ValueListenableBuilder(
+                                    valueListenable: _followButtonTextNotifier,
+                                    builder: (context, value, _) {
+                                      return ElevatedButton(
+                                        onPressed: () async {
+                                          print("follow pressed");
+                                          if (_followButtonTextNotifier.value ==
+                                              "Follow") {
+                                            _followButtonTextNotifier.value =
+                                                "Following";
+                                            _followButtonColorNotifier.value =
+                                                Colors.black54;
+                                          } else {
+                                            _followButtonTextNotifier.value =
+                                                "Follow";
+                                            _followButtonColorNotifier.value =
+                                                Colors.black87;
+                                          }
+                                          updateUserFollow(
+                                              _followButtonTextNotifier.value,
+                                              articleList[itemIndex + 1][1]);
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                          shape: StadiumBorder(),
+                                          primary:
+                                              _followButtonColorNotifier.value,
+                                        ),
+                                        child: Text(
+                                            _followButtonTextNotifier.value),
+                                      );
+                                    },
+                                  );
+                                }
+                              }),
+                        ]),
                   ),
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(DateFormat.yMMMd().format(DateTime.parse(articleList[itemIndex + 1][11])),
+                    child: Text(
+                      DateFormat.yMMMd().format(
+                          DateTime.parse(articleList[itemIndex + 1][6])),
                       style: TextStyle(
                           fontSize: 16,
                           color: Colors.black,
@@ -171,7 +241,10 @@ class ViewArticleState extends State<ViewArticle> {
                                 color: Colors.white70,
                                 offset: Offset(1, .5),
                                 blurRadius: 10)
-                          ]),),),),
+                          ]),
+                    ),
+                  ),
+                ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
@@ -251,7 +324,8 @@ class ViewArticleState extends State<ViewArticle> {
                                           blurRadius: 10)
                                     ]),
                               );
-                            },),
+                            },
+                          ),
                           Text(
                             " readers",
                             style: TextStyle(
@@ -282,14 +356,22 @@ class ViewArticleState extends State<ViewArticle> {
                             builder: (context, value, _) {
                               return IconButton(
                                 onPressed: () {
-                                  _bookmarkNotifier.value = !_bookmarkNotifier.value;
-                                  articleList[itemIndex + 1][15] = _bookmarkNotifier.value.toString();
-                                  toggleBookmark(articleList[itemIndex + 1][0], _bookmarkNotifier.value);
+                                  _bookmarkNotifier.value =
+                                      !_bookmarkNotifier.value;
+                                  articleList[itemIndex + 1][10] =
+                                      _bookmarkNotifier.value.toString();
+                                  toggleBookmark(articleList[itemIndex + 1][0],
+                                      _bookmarkNotifier.value);
                                 },
-                                icon: _bookmarkNotifier.value == true ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border),);
-                            },),
+                                icon: _bookmarkNotifier.value == true
+                                    ? Icon(Icons.bookmark)
+                                    : Icon(Icons.bookmark_border),
+                              );
+                            },
+                          ),
                           Icon(Icons.share_rounded),
-                        ],),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -338,6 +420,65 @@ class ViewArticleState extends State<ViewArticle> {
                               blurRadius: 10)
                         ]),
                   ),*/
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 1),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: FutureBuilder(
+                      future: fetchArticleTags(articleList[itemIndex + 1][0]),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: Text('loading...'));
+                        } else {
+                          if (snapshot.hasError)
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          else
+                            print('i am here 456');
+                          //print(snapshot.data[1][4]);
+                          print(snapshot.data.length);
+                          if (snapshot.data.length > 1) {
+                            print(snapshot.data[1][0]);
+                            return Align(
+                              alignment: Alignment.centerLeft,
+                                child: Wrap(
+                                  direction: Axis.horizontal,
+                                  spacing: 4,
+                                  runSpacing: 1,
+                                  children: <Widget>[
+                                    for (int index = 1; index < snapshot.data.length; index++)
+                                        ElevatedButton(
+                                          onPressed: () async {
+                                            print("tag pressed");
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/hashTagPosts',
+                                              arguments: {
+                                                'hashTag': snapshot.data[index][0],
+                                              },
+                                            );
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                            //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                            shape: StadiumBorder(),
+                                            primary: Colors.black54,
+                                          ),
+                                          child:
+                                              Text(snapshot.data[index][0]),
+                                        ),
+                                    ],
+                                ),
+                            );
+                          }
+                          else {
+                            return Text("");
+                          }
+                        }
+                      },
+                    ),
                   ),
                 ),
                 //ArticleDetailHtml(articleList[itemIndex + 1][0]),
@@ -401,26 +542,27 @@ class ViewArticleState extends State<ViewArticle> {
                                 ]),
                           ),
                           ValueListenableBuilder(
-                          valueListenable: _nbrRatingsNotifier,
-                          builder: (context, value, _) {
-                          return Text(
-                            " " + value.toString(),
-                            style: TextStyle(
-                                fontSize: 16,
-                                //color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                //fontStyle: FontStyle.italic,
-                                //letterSpacing: 5,
-                                //wordSpacing: 2,
-                                //backgroundColor: Colors.yellow,
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.white70,
-                                      offset: Offset(1, .5),
-                                      blurRadius: 10)
-                                ]),
-                          );
-                          },),
+                            valueListenable: _nbrRatingsNotifier,
+                            builder: (context, value, _) {
+                              return Text(
+                                " " + value.toString(),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    //color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    //fontStyle: FontStyle.italic,
+                                    //letterSpacing: 5,
+                                    //wordSpacing: 2,
+                                    //backgroundColor: Colors.yellow,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white70,
+                                          offset: Offset(1, .5),
+                                          blurRadius: 10)
+                                    ]),
+                              );
+                            },
+                          ),
                           Text(
                             " readers",
                             style: TextStyle(
@@ -447,18 +589,26 @@ class ViewArticleState extends State<ViewArticle> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           ValueListenableBuilder(
-                          valueListenable: _bookmarkNotifier,
-                          builder: (context, value, _) {
-                            return IconButton(
+                            valueListenable: _bookmarkNotifier,
+                            builder: (context, value, _) {
+                              return IconButton(
                                 onPressed: () {
-                                  _bookmarkNotifier.value = !_bookmarkNotifier.value;
-                                  articleList[itemIndex + 1][15] = _bookmarkNotifier.value.toString();
-                                  toggleBookmark(articleList[itemIndex + 1][0], _bookmarkNotifier.value);
+                                  _bookmarkNotifier.value =
+                                      !_bookmarkNotifier.value;
+                                  articleList[itemIndex + 1][10] =
+                                      _bookmarkNotifier.value.toString();
+                                  toggleBookmark(articleList[itemIndex + 1][0],
+                                      _bookmarkNotifier.value);
                                 },
-                                icon: _bookmarkNotifier.value == true ? Icon(Icons.bookmark) : Icon(Icons.bookmark_border),);
-                            },),
+                                icon: _bookmarkNotifier.value == true
+                                    ? Icon(Icons.bookmark)
+                                    : Icon(Icons.bookmark_border),
+                              );
+                            },
+                          ),
                           Icon(Icons.share_rounded),
-                      ],),
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -481,7 +631,7 @@ class ViewArticleState extends State<ViewArticle> {
                       ]),
                 ),
                 RatingBar.builder(
-                  initialRating: articleList[itemIndex + 1][14],
+                  initialRating: articleList[itemIndex + 1][9],
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
@@ -495,7 +645,7 @@ class ViewArticleState extends State<ViewArticle> {
                   onRatingUpdate: (myrating) {
                     print("my rating is : ");
                     print(myrating);
-                    var prevMyrating = articleList[itemIndex + 1][14];
+                    var prevMyrating = articleList[itemIndex + 1][9];
                     if (prevMyrating == 0) {
                       // not rated previously
                       _ratingNotifier.value =
@@ -512,7 +662,7 @@ class ViewArticleState extends State<ViewArticle> {
                     }
                     articleList[itemIndex + 1][4] = _ratingNotifier.value;
                     articleList[itemIndex + 1][5] = _nbrRatingsNotifier.value;
-                    articleList[itemIndex + 1][14] = myrating;
+                    articleList[itemIndex + 1][9] = myrating;
                     postRating(articleList[itemIndex + 1][0], myrating);
                   },
                 ),
@@ -535,18 +685,20 @@ class ViewArticleState extends State<ViewArticle> {
                       ]),
                 ),
                 ValueListenableBuilder(
-                valueListenable: _ratingNotifier,
-                builder: (context, value, _) {
-                return RatingBarIndicator(
-                  rating: _ratingNotifier.value,
-                  itemBuilder: (context, index) => Icon(
-                    Icons.star,
-                    color: Colors.black,
-                  ),
-                  itemCount: 10,
-                  itemSize: 30.0,
-                  direction: Axis.horizontal,
-                );},),
+                  valueListenable: _ratingNotifier,
+                  builder: (context, value, _) {
+                    return RatingBarIndicator(
+                      rating: _ratingNotifier.value,
+                      itemBuilder: (context, index) => Icon(
+                        Icons.star,
+                        color: Colors.black,
+                      ),
+                      itemCount: 10,
+                      itemSize: 30.0,
+                      direction: Axis.horizontal,
+                    );
+                  },
+                ),
               ],
             ),
           );
@@ -611,4 +763,3 @@ class ArticleDetailHtml extends StatelessWidget {
     );
   }
 }
-
