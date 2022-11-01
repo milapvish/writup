@@ -361,3 +361,211 @@ Future<List<List<dynamic>>> fetchArticlesByHashTag(String hashTag) async {
 
   return rowsAsListOfValues;
 }
+
+Future<String> checkHashTagFollow(String hashTag) async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['hashTag'] = hashTag;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);
+
+  var url = baseBackendUrl + '/checkHashTagFollow';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  print(decoded);
+
+  return decoded;
+}
+
+Future<List<List<dynamic>>> updateHashTagFollow(String followStr, String hashTag) async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['hashTag'] = hashTag;
+  jsonMap['followStr'] = followStr;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);
+
+  var url = baseBackendUrl + '/updateHashTagFollow';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
+
+Future<List<List<dynamic>>> fetchFollowingArticles() async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode('following');
+  var url = baseBackendUrl + '/fetchFollowingArticles';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
+
+Future<List<List<dynamic>>> fetchMyArticles() async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode('my');
+  var url = baseBackendUrl + '/fetchMyArticles';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
+
+Future<List<List<dynamic>>> fetchSavedPosts() async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode('saved');
+  var url = baseBackendUrl + '/fetchSavedPosts';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
+
+Future<List<List<dynamic>>> fetchMyFollowers() async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode('followers');
+  var url = baseBackendUrl + '/fetchMyFollowers';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
+
+Future<List<List<dynamic>>> fetchFollowingUsers() async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode('following');
+  var url = baseBackendUrl + '/fetchFollowingUsers';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
