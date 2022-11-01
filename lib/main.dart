@@ -9,6 +9,9 @@ import 'login.dart';
 import 'myDrawer.dart';
 import 'publicProfile.dart';
 import 'hashTagPosts.dart';
+import 'savedPosts.dart';
+import 'viewFollowers.dart';
+import 'viewFollowing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -58,6 +61,9 @@ class MyApp extends StatelessWidget {
         '/viewArticle': (context) => ViewArticle(),
         '/publicProfile': (context) => PublicProfile(),
         '/hashTagPosts': (context) => HashTagPosts(),
+        '/savedPosts': (context) => SavedPosts(),
+        '/viewFollowers': (context) => ViewFollowers(),
+        '/viewFollowing': (context) => ViewFollowing(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -78,7 +84,7 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         endDrawer: MyDrawer(),
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: Colors.black87,
           title: const Text(
             'writup',
             style: TextStyle(fontWeight: FontWeight.w900),

@@ -14,7 +14,7 @@ class FollowingTabView extends StatelessWidget {
     print("here aaya");
     print(test);
     return FutureBuilder(
-      future: fetchArticles(),
+      future: fetchFollowingArticles(),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: Text('loading...'));
