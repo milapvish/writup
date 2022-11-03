@@ -12,6 +12,7 @@ import 'hashTagPosts.dart';
 import 'savedPosts.dart';
 import 'viewFollowers.dart';
 import 'viewFollowing.dart';
+import 'search.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -33,6 +34,7 @@ void main() async {
   );
   runApp(MyApp());
 }
+
 class MyApp extends StatelessWidget {
   //var test = fetchArtList();
   @override
@@ -46,8 +48,7 @@ class MyApp extends StatelessWidget {
       final jwt = getJwt(user);
       print(jwt);
       firstWidget = HomePage();
-    }
-    else {
+    } else {
       firstWidget = AuthScreen();
     }
 
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
         '/savedPosts': (context) => SavedPosts(),
         '/viewFollowers': (context) => ViewFollowers(),
         '/viewFollowing': (context) => ViewFollowing(),
+        '/search': (context) => SearchScreen(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -89,6 +91,26 @@ class HomePage extends StatelessWidget {
             'writup',
             style: TextStyle(fontWeight: FontWeight.w900),
           ),
+          actions: [
+            IconButton(
+              onPressed: () {
+                print("search pressed");
+                Navigator.pushNamed(context, '/search');
+              },
+              icon: Icon(Icons.search_rounded),
+            ),
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  onPressed: () {
+                    print("menu pressed");
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                  icon: Icon(Icons.menu),
+                );
+              },
+            ),
+          ],
           bottom: TabBar(
             tabs: [
               Tab(icon: Icon(Icons.home_filled)),
@@ -277,7 +299,6 @@ class CreateArticleState extends State<CreateArticle> {
     );
   }
 }
-
 
 Future<String> getJwt(user) async {
   final jwt = await user.getIdToken();
