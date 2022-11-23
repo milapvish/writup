@@ -13,12 +13,14 @@ import 'savedPosts.dart';
 import 'viewFollowers.dart';
 import 'viewFollowing.dart';
 import 'search.dart';
+import 'viewNotifications.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'consts.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
+import 'package:badges/badges.dart';
 //import 'package:csv_reader/csv_reader.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -66,6 +68,7 @@ class MyApp extends StatelessWidget {
         '/viewFollowers': (context) => ViewFollowers(),
         '/viewFollowing': (context) => ViewFollowing(),
         '/search': (context) => SearchScreen(),
+        '/notifications': (context) => ViewNotifications(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -78,45 +81,94 @@ class MyApp extends StatelessWidget {
 
 class HomePage extends StatelessWidget {
   var data = new HomeTabView(7);
+  final _nbrNotificationsNotifier = ValueNotifier<String>('0');
+  final _showNotificationsNotifier = ValueNotifier<bool>(false);
+
   @override
   Widget build(BuildContext context) {
+    final periodicTimer = Timer.periodic(
+      const Duration(seconds: 10),
+      (timer) async {
+        // Update user about remaining time
+        print("printing every 10 secs");
+        print(_nbrNotificationsNotifier.value);
+        _nbrNotificationsNotifier.value = await getNbrUnreadNotifs();
+        if (_nbrNotificationsNotifier.value != '0') {
+          print("inside if");
+          _showNotificationsNotifier.value = true;
+        }
+        else {
+          print("inside else");
+          _showNotificationsNotifier.value = false;
+        }
+      },
+    );
+
     print(data.test);
     return DefaultTabController(
       length: 3,
       child: Scaffold(
         endDrawer: MyDrawer(),
-        appBar: AppBar(
-          backgroundColor: Colors.black87,
-          title: const Text(
-            'writup',
-            style: TextStyle(fontWeight: FontWeight.w900),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                print("search pressed");
-                Navigator.pushNamed(context, '/search');
-              },
-              icon: Icon(Icons.search_rounded),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(100),
+          child: AppBar(
+            backgroundColor: Colors.black87,
+            title: const Text(
+              'writup',
+              style: TextStyle(fontWeight: FontWeight.w900),
             ),
-            Builder(
-              builder: (context) {
-                return IconButton(
-                  onPressed: () {
-                    print("menu pressed");
-                    Scaffold.of(context).openEndDrawer();
-                  },
-                  icon: Icon(Icons.menu),
-                );
-              },
-            ),
-          ],
-          bottom: TabBar(
-            tabs: [
-              Tab(icon: Icon(Icons.home_filled)),
-              Tab(icon: Icon(Icons.people)),
-              Tab(icon: Icon(Icons.person)),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  print("search pressed");
+                  Navigator.pushNamed(context, '/search');
+                },
+                icon: Icon(Icons.search_rounded),
+              ),
+              ValueListenableBuilder(
+                valueListenable: _nbrNotificationsNotifier,
+                builder: (context, value, _) {
+                  return Badge(
+                    showBadge: _showNotificationsNotifier.value,
+                    //shape: BadgeShape.square,
+                    badgeColor: Colors.white,
+                    position: BadgePosition.topEnd(top: 4, end: 2),
+                    borderRadius: BorderRadius.circular(5),
+                    badgeContent:
+                        Text(_nbrNotificationsNotifier.value),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.notifications,
+                      ),
+                      //iconSize: 50,
+                      //color: Colors.green,
+                      //splashColor: Colors.purple,
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/notifications');
+                      },
+                    ),
+                  );
+                },
+              ),
+              Builder(
+                builder: (context) {
+                  return IconButton(
+                    onPressed: () {
+                      print("menu pressed");
+                      Scaffold.of(context).openEndDrawer();
+                    },
+                    icon: Icon(Icons.menu),
+                  );
+                },
+              ),
             ],
+            bottom: TabBar(
+              tabs: [
+                Tab(icon: Icon(Icons.home_filled)),
+                Tab(icon: Icon(Icons.people)),
+                Tab(icon: Icon(Icons.person)),
+              ],
+            ),
           ),
         ),
         body: TabBarView(
