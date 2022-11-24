@@ -84,11 +84,33 @@ class HomePage extends StatelessWidget {
   final _nbrNotificationsNotifier = ValueNotifier<String>('0');
   final _showNotificationsNotifier = ValueNotifier<bool>(false);
 
+
   @override
   Widget build(BuildContext context) {
+    // Below timer only runs once to fetch notif count initially
     final periodicTimer = Timer.periodic(
-      const Duration(seconds: 10),
+      const Duration(seconds: 1),
       (timer) async {
+        // Update user about remaining time
+        print("printing every 1 secs");
+        print(_nbrNotificationsNotifier.value);
+        _nbrNotificationsNotifier.value = await getNbrUnreadNotifs();
+        if (_nbrNotificationsNotifier.value != '0') {
+          print("inside if");
+          _showNotificationsNotifier.value = true;
+        }
+        else {
+          print("inside else");
+          _showNotificationsNotifier.value = false;
+        }
+        timer.cancel();
+      },
+    );
+
+    // Below time runs every 10 seconds to get nbr notifs
+    final periodicTimer1 = Timer.periodic(
+      const Duration(seconds: 10),
+          (timer) async {
         // Update user about remaining time
         print("printing every 10 secs");
         print(_nbrNotificationsNotifier.value);
@@ -103,7 +125,6 @@ class HomePage extends StatelessWidget {
         }
       },
     );
-
     print(data.test);
     return DefaultTabController(
       length: 3,
@@ -128,7 +149,14 @@ class HomePage extends StatelessWidget {
               ValueListenableBuilder(
                 valueListenable: _nbrNotificationsNotifier,
                 builder: (context, value, _) {
-                  return Badge(
+                  return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/notifications',
+                            arguments: {
+                              'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
+                            },);
+                  },
+                    child: Badge(
                     showBadge: _showNotificationsNotifier.value,
                     //shape: BadgeShape.square,
                     badgeColor: Colors.white,
@@ -144,10 +172,13 @@ class HomePage extends StatelessWidget {
                       //color: Colors.green,
                       //splashColor: Colors.purple,
                       onPressed: () {
-                        Navigator.pushNamed(context, '/notifications');
+                        Navigator.pushNamed(context, '/notifications',
+                          arguments: {
+                            'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
+                          },);
                       },
                     ),
-                  );
+                  ),);
                 },
               ),
               Builder(

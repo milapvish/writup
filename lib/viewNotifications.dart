@@ -14,6 +14,8 @@ class _ViewNotificationsState extends State<ViewNotifications> {
   @override
   Widget build(BuildContext context) {
     print("here aaya");
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    var nbrUnreadNotifs = arg['nbrUnreadNotifs'];
     var data;
     return Scaffold(
       appBar: AppBar(
@@ -72,8 +74,21 @@ class _ViewNotificationsState extends State<ViewNotifications> {
                       return Container(
                         color: bgColor,
                         child: InkWell(
-                          onTap: () {
-                            print("inkwell tapped");
+                          onTap: () async {
+                            print(snapshot.data[index + 1][4]);
+                            var articleList = await fetchArticleByPostID(snapshot.data[index + 1][4].toInt());
+                            if (snapshot.data[index + 1][3] == 0) {
+                              markNotifSeen(snapshot.data[index + 1][0],
+                                  snapshot.data[index + 1][2]);
+                            }
+                            Navigator.pushNamed(
+                              context,
+                              '/viewArticle',
+                              arguments: {
+                                'articleList': articleList,
+                                'thisIndex': 0,
+                              },
+                            );
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(
@@ -178,7 +193,18 @@ class _ViewNotificationsState extends State<ViewNotifications> {
                         color: bgColor,
                         child: InkWell(
                           onTap: () {
-                            print("inkwell tapped");
+                            if (snapshot.data[index + 1][3] == 0) {
+                              markNotifSeen(snapshot.data[index + 1][0],
+                                  snapshot.data[index + 1][2]);
+                            }
+                            Navigator.pushNamed(
+                                context,
+                                '/publicProfile',
+                                arguments: {
+                                'userId': snapshot.data[index + 1][5],
+                                'userName':
+                                snapshot.data[index + 1][8].toString(),
+                                },);
                           },
                           child: Padding(
                             padding: EdgeInsets.symmetric(

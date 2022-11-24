@@ -13,7 +13,7 @@ Future<List<List<dynamic>>> fetchArticles() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -27,7 +27,7 @@ Future<List<List<dynamic>>> fetchArticles() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -54,7 +54,7 @@ Future<String> postArticle(Map newArticle) async {
   );
   print("getting response for post");
   print (response.statusCode);
-  print(response.body);
+  //print(response.body);
   return "success";
 }
 
@@ -77,7 +77,7 @@ Future<List<List<dynamic>>> fetchArticleDetail( int postid ) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
   print("holaaaa");
 
   return rowsAsListOfValues;
@@ -109,7 +109,7 @@ Future<List<List<dynamic>>> createAccount(String email, String name) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -144,7 +144,7 @@ Future<List<List<dynamic>>> postRating(int post_id, double rating) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   return rowsAsListOfValues;
 }
@@ -175,7 +175,7 @@ Future<List<List<dynamic>>> toggleBookmark(int post_id, bool bookmark) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   return rowsAsListOfValues;
 }
@@ -206,7 +206,7 @@ Future<List<List<dynamic>>> fetchArticlesByUserID(int userId) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -241,7 +241,7 @@ Future<List<List<dynamic>>> updateUserFollow(String followStr, int userId) async
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -274,7 +274,7 @@ Future<String> checkUserFollow(int userId) async {
       body: rawJson
   );
   String decoded = Utf8Decoder().convert(response.bodyBytes);
-  print(decoded);
+  //print(decoded);
 
   return decoded;
 }
@@ -298,7 +298,7 @@ Future<List<List<dynamic>>> fetchAccountDetails( int userId ) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
   print("holaaaa");
 
   return rowsAsListOfValues;
@@ -322,7 +322,7 @@ Future<List<List<dynamic>>> fetchArticleTags( int postid ) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
   print("holaaaa");
 
   return rowsAsListOfValues;
@@ -353,7 +353,7 @@ Future<List<List<dynamic>>> fetchArticlesByHashTag(String hashTag) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -385,7 +385,7 @@ Future<String> checkHashTagFollow(String hashTag) async {
       body: rawJson
   );
   String decoded = Utf8Decoder().convert(response.bodyBytes);
-  print(decoded);
+  //print(decoded);
 
   return decoded;
 }
@@ -416,7 +416,7 @@ Future<List<List<dynamic>>> updateHashTagFollow(String followStr, String hashTag
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -445,7 +445,7 @@ Future<List<List<dynamic>>> fetchFollowingArticles() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -474,7 +474,7 @@ Future<List<List<dynamic>>> fetchMyArticles() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -503,7 +503,7 @@ Future<List<List<dynamic>>> fetchSavedPosts() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -532,7 +532,7 @@ Future<List<List<dynamic>>> fetchMyFollowers() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -561,7 +561,7 @@ Future<List<List<dynamic>>> fetchFollowingUsers() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -596,7 +596,7 @@ Future<List<List<dynamic>>> searchArticles(String searchTerm) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -627,7 +627,7 @@ Future<String> getNbrUnreadNotifs() async {
       body: rawJson
   );
   String decoded = Utf8Decoder().convert(response.bodyBytes);
-  print(decoded);
+  //print(decoded);
 
   return decoded;
 }
@@ -653,11 +653,75 @@ Future<List<List<dynamic>>> fetchNotifications() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  print(rowsAsListOfValues);
+  //print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );  JUST FOR INITIALIZING FIREBASE ONCE */
 
   return rowsAsListOfValues;
+}
+
+Future<List<List<dynamic>>> fetchArticleByPostID(int postId) async {
+
+  // get JWT and store in global variable
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['postId'] = postId;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);
+
+  var url = baseBackendUrl + '/fetchArticleByPostID';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  //print(rowsAsListOfValues);
+
+  /* await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );  JUST FOR INITIALIZING FIREBASE ONCE */
+
+  return rowsAsListOfValues;
+}
+void markNotifSeen(int notifNbr, String notifType) async {
+
+  // get JWT and store in global variable
+  print("going to mark notif seen");
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    print("JWT is " + jwt);
+    jwtGlobal = jwt;
+  }
+
+  // define and create json
+  var jsonMap = Map();
+  jsonMap['notifNbr'] = notifNbr;
+  jsonMap['notifType'] = notifType;
+  String rawJson = jsonEncode(jsonMap);
+  print(rawJson);
+
+  var url = baseBackendUrl + '/markNotifSeen';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  String decoded = Utf8Decoder().convert(response.bodyBytes);
+  List<List<dynamic>> rowsAsListOfValues = [];
+  rowsAsListOfValues = const CsvToListConverter().convert(decoded);
+  print(rowsAsListOfValues);
+
 }
