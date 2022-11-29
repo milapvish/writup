@@ -27,7 +27,7 @@ Future<List<List<dynamic>>> fetchArticles() async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  //print(rowsAsListOfValues);
+  print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

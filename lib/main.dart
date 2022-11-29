@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
         '/viewFollowing': (context) => ViewFollowing(),
         '/search': (context) => SearchScreen(),
         '/notifications': (context) => ViewNotifications(),
+        '/createArticleDetail': (context) => CreateArticleDetail(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -254,13 +255,13 @@ class CreateArticleState extends State<CreateArticle> {
             style: TextStyle(fontWeight: FontWeight.w900),
           ),
         ),
-        body: SingleChildScrollView(
+          body: SingleChildScrollView(
           child: Column(children: <Widget>[
-            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            Padding(padding: EdgeInsets.symmetric(vertical: 15)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(
-                height: 150,
+                height: 220,
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -274,7 +275,7 @@ class CreateArticleState extends State<CreateArticle> {
                     hintText: "An interesting heading",
                     border: InputBorder.none,
                   ),
-                  style: const TextStyle(fontSize: 24),
+                  style: const TextStyle(fontSize: 32),
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   maxLength: 100,
@@ -284,7 +285,7 @@ class CreateArticleState extends State<CreateArticle> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(
-                height: 160,
+                height: 240,
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -298,36 +299,18 @@ class CreateArticleState extends State<CreateArticle> {
                     hintText: "Add a sub-heading (optional)",
                     border: InputBorder.none,
                   ),
-                  style: const TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 24),
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
                   maxLength: 200,
                 ),
               ),
             ),
-            HtmlEditor(
-              controller: htmlcontroller, //required
-              htmlEditorOptions: HtmlEditorOptions(
-                hint: "Write as much as you want :)",
-                //initalText: "text content initial, if any",
-              ),
-              otherOptions: OtherOptions(
-                height: 380,
-              ),
-              htmlToolbarOptions: HtmlToolbarOptions(defaultToolbarButtons: [
-                //StyleButtons(),
-                FontButtons(
-                    clearAll: false,
-                    strikethrough: false,
-                    superscript: false,
-                    subscript: false),
-              ]),
-            ),
             Padding(padding: EdgeInsets.symmetric(vertical: 5)),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(
-                height: 80,
+                height: 120,
                 child: TextFormField(
                   validator: (value) {
                     if (value != null) {
@@ -356,25 +339,43 @@ class CreateArticleState extends State<CreateArticle> {
                 ),
               ),
             ),
-            Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-          ]),
-        ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 30)),
+            Text("Your Writup on next page",
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black38,
+                  fontWeight: FontWeight.w300,
+                  fontStyle: FontStyle.italic,
+                  //letterSpacing: 5,
+                  //wordSpacing: 2,
+                  //backgroundColor: Colors.yellow,
+                  shadows: [
+                    Shadow(
+                        color: Colors.white70,
+                        offset: Offset(1, .5),
+                        blurRadius: 10)
+                  ]),),
+          ]),),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
             print('done pressed');
-            String inpHtml = await htmlcontroller.getText();
-            newArticle['detail'] = inpHtml;
-            print(inpHtml);
+            //String inpHtml = await htmlcontroller.getText();
+            //newArticle['detail'] = inpHtml;
+            //print(inpHtml);
             if (_formKey1.currentState!.validate()) {
               print("form valid");
               //print(newArticle['details']);
-              postArticle(newArticle);
+              Navigator.pushNamed(context, '/createArticleDetail',
+                arguments: {
+                  'newArticle': newArticle,
+                },);
+              //postArticle(newArticle);
             }
             //Navigator.pushNamed(context, '/createArticle');
           },
           //label: const Text('4K'),
-          child: Icon(Icons.done),
+          child: Icon(Icons.arrow_forward_ios_rounded),
           //child: icon: const Icon(Icons.download),
           backgroundColor: Colors.red[900],
         ),
@@ -382,6 +383,101 @@ class CreateArticleState extends State<CreateArticle> {
     );
   }
 }
+
+class CreateArticleDetail extends StatefulWidget {
+  //const CreatArticle({super.key});
+
+  @override
+  CreateArticleDetailState createState() {
+    return CreateArticleDetailState();
+  }
+}
+
+class CreateArticleDetailState extends State<CreateArticleDetail> {
+  final _formKey1 = GlobalKey<FormState>();
+
+  final _isPostingNotifier = ValueNotifier<bool>(false);
+
+  @override
+  Widget build(BuildContext context) {
+    _isPostingNotifier.value = false;
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    var newArticle = arg['newArticle'];
+    return Form(
+      key: _formKey1,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          title: const Text(
+            'write article',
+            style: TextStyle(fontWeight: FontWeight.w900),
+          ),
+        ),
+        body: Column(children: <Widget>[
+          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          HtmlEditor(
+            controller: htmlcontroller, //required
+            callbacks: Callbacks(onInit: () {
+              //htmlcontroller.setFullScreen();
+            }),
+            htmlEditorOptions: HtmlEditorOptions(
+              hint: "Write as much as you want :)",
+              autoAdjustHeight: true,
+              //initalText: "text content initial, if any",
+            ),
+            otherOptions: OtherOptions(
+              //height: 900,
+            ),
+            htmlToolbarOptions: HtmlToolbarOptions(defaultToolbarButtons: [
+              //StyleButtons(),
+              FontButtons(
+                  clearAll: false,
+                  strikethrough: false,
+                  superscript: false,
+                  subscript: false),
+            ],
+            ),
+          ),
+          //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
+        ]),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            // Add your onPressed code here!
+            print('done pressed');
+            _isPostingNotifier.value = true;
+            String inpHtml = await htmlcontroller.getText();
+            newArticle['detail'] = inpHtml;
+            print(inpHtml);
+            if (_formKey1.currentState!.validate()) {
+              print("form valid");
+              //print(newArticle['details']);
+              await postArticle(newArticle);
+              int count = 0;
+              Navigator.of(context).popUntil((_)=> count++>= 2);
+            }
+            //Navigator.pushNamed(context, '/createArticle');
+          },
+          //label: const Text('4K'),
+          child: ValueListenableBuilder(
+          valueListenable: _isPostingNotifier,
+          builder: (context, value, _) {
+            if (_isPostingNotifier.value == false) {
+              return Icon(Icons.done);
+            }
+            else {
+              return CircularProgressIndicator();
+            }
+            },),
+          backgroundColor: Colors.red[900],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
 
 Future<String> getJwt(user) async {
   final jwt = await user.getIdToken();

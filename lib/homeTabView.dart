@@ -39,7 +39,9 @@ class HomeTabViewState extends State<HomeTabView> {
             return Center(child: Text('Error: ${snapshot.error}'));
           else
             print('i am here');
-          //print(snapshot.data[1][4]);
+          print(snapshot.data);
+          print("data 0");
+          print(snapshot.data[0][4]);
           print(snapshot.data.length);
           data = snapshot.data;
           return ArticleListViewCommon(data);

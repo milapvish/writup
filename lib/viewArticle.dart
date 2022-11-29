@@ -631,7 +631,7 @@ class ViewArticleState extends State<ViewArticle> {
                       ]),
                 ),
                 RatingBar.builder(
-                  initialRating: articleList[itemIndex + 1][9],
+                  initialRating: articleList[itemIndex + 1][9].toDouble(),
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,

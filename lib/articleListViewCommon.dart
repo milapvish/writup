@@ -57,6 +57,7 @@ class ArticleListViewCommon extends StatelessWidget {
                       ),
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    if (articleList[index + 1][3] != '')
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Align(
@@ -108,12 +109,14 @@ class ArticleListViewCommon extends StatelessWidget {
                       ),
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    // below if condition handles extra </p> html tag at the end
+                    if (articleList[index + 1][7].length > 4)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 1),
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Html(
-                          data: articleList[index + 1][7] + '...',
+                          data: articleList[index + 1][7].substring(0, articleList[index + 1][7].length -4) + '...',
                         ),
                                 /*child: Text(
                                 articleList[index + 1]
@@ -136,6 +139,35 @@ class ArticleListViewCommon extends StatelessWidget {
                               ),*/
                       ),
                     ),
+                    if (articleList[index + 1][7].length <= 4)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 1),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Html(
+                            data: articleList[index + 1][7] + '...',
+                          ),
+                          /*child: Text(
+                                articleList[index + 1]
+                                        [12] + //.substring(0, 200) +
+                                    '...',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    //color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    //fontStyle: FontStyle.italic,
+                                    //letterSpacing: 5,
+                                    //wordSpacing: 2,
+                                    //backgroundColor: Colors.yellow,
+                                    shadows: [
+                                      Shadow(
+                                          color: Colors.white70,
+                                          offset: Offset(1, .5),
+                                          blurRadius: 10)
+                                    ]),
+                              ),*/
+                        ),
+                      ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
