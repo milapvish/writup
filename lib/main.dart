@@ -85,7 +85,6 @@ class HomePage extends StatelessWidget {
   final _nbrNotificationsNotifier = ValueNotifier<String>('0');
   final _showNotificationsNotifier = ValueNotifier<bool>(false);
 
-
   @override
   Widget build(BuildContext context) {
     // Below timer only runs once to fetch notif count initially
@@ -99,8 +98,7 @@ class HomePage extends StatelessWidget {
         if (_nbrNotificationsNotifier.value != '0') {
           print("inside if");
           _showNotificationsNotifier.value = true;
-        }
-        else {
+        } else {
           print("inside else");
           _showNotificationsNotifier.value = false;
         }
@@ -111,7 +109,7 @@ class HomePage extends StatelessWidget {
     // Below time runs every 10 seconds to get nbr notifs
     final periodicTimer1 = Timer.periodic(
       const Duration(seconds: 10),
-          (timer) async {
+      (timer) async {
         // Update user about remaining time
         print("printing every 10 secs");
         print(_nbrNotificationsNotifier.value);
@@ -119,8 +117,7 @@ class HomePage extends StatelessWidget {
         if (_nbrNotificationsNotifier.value != '0') {
           print("inside if");
           _showNotificationsNotifier.value = true;
-        }
-        else {
+        } else {
           print("inside else");
           _showNotificationsNotifier.value = false;
         }
@@ -135,9 +132,21 @@ class HomePage extends StatelessWidget {
           preferredSize: Size.fromHeight(100),
           child: AppBar(
             backgroundColor: Colors.black87,
-            title: const Text(
-              'writup',
-              style: TextStyle(fontWeight: FontWeight.w900),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Image.asset('images/writup_logo_inverted.png',
+                    height: 35, width: 35),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: Text(
+                  'writup',
+                  style: TextStyle(
+                      fontFamily: 'LeagueSpartan',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 36),
+                ),),
+              ],
             ),
             actions: [
               IconButton(
@@ -151,35 +160,42 @@ class HomePage extends StatelessWidget {
                 valueListenable: _nbrNotificationsNotifier,
                 builder: (context, value, _) {
                   return InkWell(
-                      onTap: () {
-                        Navigator.pushNamed(context, '/notifications',
-                            arguments: {
-                              'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
-                            },);
-                  },
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/notifications',
+                        arguments: {
+                          'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
+                        },
+                      );
+                    },
                     child: Badge(
-                    showBadge: _showNotificationsNotifier.value,
-                    //shape: BadgeShape.square,
-                    badgeColor: Colors.white,
-                    position: BadgePosition.topEnd(top: 4, end: 2),
-                    borderRadius: BorderRadius.circular(5),
-                    badgeContent:
-                        Text(_nbrNotificationsNotifier.value),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.notifications,
+                      showBadge: _showNotificationsNotifier.value,
+                      //shape: BadgeShape.square,
+                      badgeColor: Colors.white,
+                      position: BadgePosition.topEnd(top: 4, end: 2),
+                      borderRadius: BorderRadius.circular(5),
+                      badgeContent: Text(_nbrNotificationsNotifier.value),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.notifications,
+                        ),
+                        //iconSize: 50,
+                        //color: Colors.green,
+                        //splashColor: Colors.purple,
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            '/notifications',
+                            arguments: {
+                              'nbrUnreadNotifs':
+                                  _nbrNotificationsNotifier.value,
+                            },
+                          );
+                        },
                       ),
-                      //iconSize: 50,
-                      //color: Colors.green,
-                      //splashColor: Colors.purple,
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/notifications',
-                          arguments: {
-                            'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
-                          },);
-                      },
                     ),
-                  ),);
+                  );
                 },
               ),
               Builder(
@@ -255,7 +271,7 @@ class CreateArticleState extends State<CreateArticle> {
             style: TextStyle(fontWeight: FontWeight.w900),
           ),
         ),
-          body: SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(children: <Widget>[
             Padding(padding: EdgeInsets.symmetric(vertical: 15)),
             Padding(
@@ -340,7 +356,8 @@ class CreateArticleState extends State<CreateArticle> {
               ),
             ),
             Padding(padding: EdgeInsets.symmetric(vertical: 30)),
-            Text("Your Writup on next page",
+            Text(
+              "Your Writup on next page",
               style: TextStyle(
                   fontSize: 14,
                   color: Colors.black38,
@@ -354,8 +371,10 @@ class CreateArticleState extends State<CreateArticle> {
                         color: Colors.white70,
                         offset: Offset(1, .5),
                         blurRadius: 10)
-                  ]),),
-          ]),),
+                  ]),
+            ),
+          ]),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
@@ -366,10 +385,13 @@ class CreateArticleState extends State<CreateArticle> {
             if (_formKey1.currentState!.validate()) {
               print("form valid");
               //print(newArticle['details']);
-              Navigator.pushNamed(context, '/createArticleDetail',
+              Navigator.pushNamed(
+                context,
+                '/createArticleDetail',
                 arguments: {
                   'newArticle': newArticle,
-                },);
+                },
+              );
               //postArticle(newArticle);
             }
             //Navigator.pushNamed(context, '/createArticle');
@@ -426,16 +448,17 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               //initalText: "text content initial, if any",
             ),
             otherOptions: OtherOptions(
-              //height: 900,
-            ),
-            htmlToolbarOptions: HtmlToolbarOptions(defaultToolbarButtons: [
-              //StyleButtons(),
-              FontButtons(
-                  clearAll: false,
-                  strikethrough: false,
-                  superscript: false,
-                  subscript: false),
-            ],
+                //height: 900,
+                ),
+            htmlToolbarOptions: HtmlToolbarOptions(
+              defaultToolbarButtons: [
+                //StyleButtons(),
+                FontButtons(
+                    clearAll: false,
+                    strikethrough: false,
+                    superscript: false,
+                    subscript: false),
+              ],
             ),
           ),
           //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
@@ -453,31 +476,27 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               //print(newArticle['details']);
               await postArticle(newArticle);
               int count = 0;
-              Navigator.of(context).popUntil((_)=> count++>= 2);
+              Navigator.of(context).popUntil((_) => count++ >= 2);
             }
             //Navigator.pushNamed(context, '/createArticle');
           },
           //label: const Text('4K'),
           child: ValueListenableBuilder(
-          valueListenable: _isPostingNotifier,
-          builder: (context, value, _) {
-            if (_isPostingNotifier.value == false) {
-              return Icon(Icons.done);
-            }
-            else {
-              return CircularProgressIndicator();
-            }
-            },),
+            valueListenable: _isPostingNotifier,
+            builder: (context, value, _) {
+              if (_isPostingNotifier.value == false) {
+                return Icon(Icons.done);
+              } else {
+                return CircularProgressIndicator();
+              }
+            },
+          ),
           backgroundColor: Colors.red[900],
         ),
       ),
     );
   }
 }
-
-
-
-
 
 Future<String> getJwt(user) async {
   final jwt = await user.getIdToken();

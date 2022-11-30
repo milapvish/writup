@@ -699,6 +699,7 @@ class ViewArticleState extends State<ViewArticle> {
                     );
                   },
                 ),
+                Padding(padding: EdgeInsets.symmetric(vertical: 40)),
               ],
             ),
           );

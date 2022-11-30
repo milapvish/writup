@@ -36,11 +36,13 @@ dependencies:
   flutter_html: ^2.2.1
   firebase_core: ^1.21.0
   firebase_auth: ^3.6.4
+  firebase_core_platform_interface: 4.5.1
   flutter_rating_bar: ^4.0.1
   intl: ^0.17.0
   material_floating_search_bar: ^0.3.7
   shared_preferences: ^2.0.15
   badges: ^2.0.3
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -48,7 +50,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -68,8 +69,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - images/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -83,11 +84,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: LeagueSpartan
+      fonts:
+        - asset: fonts/LeagueSpartan-ExtraBold.ttf
+          weight: 800
+        - asset: fonts/LeagueSpartan-Bold.ttf
+          weight: 700
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
