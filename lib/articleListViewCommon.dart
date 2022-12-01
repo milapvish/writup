@@ -83,7 +83,7 @@ class ArticleListViewCommon extends StatelessWidget {
                           articleList[index + 1][3],
                           style: TextStyle(
                               fontSize: 16,
-//color: Colors.white,
+                              color: Colors.black54,
                               fontWeight: FontWeight.w400,
                               fontStyle: FontStyle.italic,
 //letterSpacing: 5,

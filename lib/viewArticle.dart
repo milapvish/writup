@@ -61,6 +61,8 @@ class ViewArticleState extends State<ViewArticle> {
           print("bookmark value " + _bookmarkNotifier.value.toString());
 
           return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10),
             child: Column(
               children: <Widget>[
                 Padding(padding: EdgeInsets.symmetric(vertical: 10)),
@@ -71,8 +73,8 @@ class ViewArticleState extends State<ViewArticle> {
                     child: Text(
                       articleList[itemIndex + 1][2],
                       style: TextStyle(
-                          fontSize: 26,
-                          //color: Colors.white,
+                          fontSize: 32,
+                          color: Colors.black87,
                           fontWeight: FontWeight.w600,
                           //fontStyle: FontStyle.italic,
                           //letterSpacing: 5,
@@ -96,7 +98,7 @@ class ViewArticleState extends State<ViewArticle> {
                       articleList[itemIndex + 1][3],
                       style: TextStyle(
                           fontSize: 18,
-                          //color: Colors.white,
+                          color: Colors.black54,
                           fontWeight: FontWeight.w400,
                           fontStyle: FontStyle.italic,
                           //letterSpacing: 5,
@@ -230,8 +232,8 @@ class ViewArticleState extends State<ViewArticle> {
                           DateTime.parse(articleList[itemIndex + 1][6])),
                       style: TextStyle(
                           fontSize: 16,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w400,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
                           fontStyle: FontStyle.italic,
                           //letterSpacing: 5,
                           //wordSpacing: 2,
@@ -271,8 +273,8 @@ class ViewArticleState extends State<ViewArticle> {
                                   " " + (valueStr),
                                   style: TextStyle(
                                       fontSize: 16,
-                                      //color: Colors.white,
-                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black87,
+                                      fontWeight: FontWeight.w500,
                                       //fontStyle: FontStyle.italic,
                                       //letterSpacing: 5,
                                       //wordSpacing: 2,
@@ -311,8 +313,8 @@ class ViewArticleState extends State<ViewArticle> {
                                 " " + value.toString(),
                                 style: TextStyle(
                                     fontSize: 16,
-                                    //color: Colors.white,
-                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.w500,
                                     //fontStyle: FontStyle.italic,
                                     //letterSpacing: 5,
                                     //wordSpacing: 2,
@@ -391,13 +393,26 @@ class ViewArticleState extends State<ViewArticle> {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
                           else
-                            print('i am here 123');
+                            print('i am here substring');
                           //print(snapshot.data[1][4]);
                           print(snapshot.data.length);
+                          var detailWritup;
+                          detailWritup = snapshot.data[1][1];
+                          print(snapshot.data[1][1].substring(0, 3));
+                          if (snapshot.data[1][1].substring(0, 3) == '<p>') {
+                            print("inside substring");
+                            detailWritup = snapshot.data[1][1].substring(3, detailWritup.length);
+                          }
                           return Align(
                             alignment: Alignment.centerLeft,
                             child: Html(
-                              data: snapshot.data[1][1],
+                              data: detailWritup,
+                              style: {
+                                "body": Style(
+                                  fontSize: FontSize(17.0),
+                                  //fontWeight: FontWeight.bold,
+                                ),
+                              },
                             ),
                           );
                         }
@@ -701,7 +716,7 @@ class ViewArticleState extends State<ViewArticle> {
                 ),
                 Padding(padding: EdgeInsets.symmetric(vertical: 40)),
               ],
-            ),
+            ),),
           );
         },
       ),
