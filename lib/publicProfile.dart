@@ -86,22 +86,31 @@ class PublicProfile extends StatelessWidget {
                                 ),
                                 Padding(
                                     padding: EdgeInsets.symmetric(vertical: 4)),
-                                Text(
-                                  snapshot.data["karma"] + ' Karma',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      //fontStyle: FontStyle.italic,
-                                      //letterSpacing: 5,
-                                      //wordSpacing: 2,
-                                      //backgroundColor: Colors.yellow,
-                                      shadows: [
-                                        Shadow(
-                                            color: Colors.white70,
-                                            offset: Offset(1, .5),
-                                            blurRadius: 10)
-                                      ]),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Image.asset(
+                                        'images/writup_logo.png',
+                                        height: 24,
+                                        width: 24),
+                                    Text(
+                                      ' ' + snapshot.data["karma"],
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          //fontStyle: FontStyle.italic,
+                                          //letterSpacing: 5,
+                                          //wordSpacing: 2,
+                                          //backgroundColor: Colors.yellow,
+                                          shadows: [
+                                            Shadow(
+                                                color: Colors.white,
+                                                offset: Offset(1, .5),
+                                                blurRadius: 10)
+                                          ]),
+                                    ),
+                                  ],
                                 ),
                                 ValueListenableBuilder(
                                   valueListenable: _followButtonTextNotifier,
@@ -257,9 +266,18 @@ class PublicProfile extends StatelessWidget {
                   print('i am here');
                 //print(snapshot.data[1][4]);
                 print(snapshot.data.length);
-                return Flexible(
-                  child: ArticleListViewCommon(snapshot.data),
-                );
+                if (snapshot.data.length > 1) {
+                  return Flexible(
+                    child: ArticleListViewCommon(snapshot.data),
+                  );
+                }
+                else {
+                  return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 200),
+              child: Center(
+                    child: Text("No writups yet"),
+                  ),);
+                }
               }
             },
           ),

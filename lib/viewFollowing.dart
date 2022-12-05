@@ -26,7 +26,8 @@ class ViewFollowing extends StatelessWidget {
               print('i am here in view following');
             //print(snapshot.data[1][4]);
             print(snapshot.data.length);
-            print(snapshot.data[1][0]);
+            //print(snapshot.data[1][0]);
+            if (snapshot.data.length > 1) {
             return ListView.builder(
                 itemCount: snapshot.data.length - 1,
                 itemBuilder: (BuildContext context, int itemIndex) {
@@ -144,7 +145,11 @@ class ViewFollowing extends StatelessWidget {
                       ],
                     ),
                   );
-                });
+                });}
+            else {
+              return Center(
+                child: Text("People you follow appear here"),);
+            }
           }
         },
       ),

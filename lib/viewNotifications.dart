@@ -57,8 +57,9 @@ class _ViewNotificationsState extends State<ViewNotifications> {
                       bgColor = Colors.black12;
                     }
                     // calc age of notif
-                    var dt = DateTime.now();
-                    var dt1 = DateTime.parse(snapshot.data[index + 1][7]);
+                    var dt = DateTime.now().toUtc();
+                    print(DateTime.now());
+                    var dt1 = DateTime.parse(snapshot.data[index + 1][7] + 'Z'); //'Z' tells it's UTC
                     Duration diff = dt.difference(dt1);
                     String ageStr = '';
                     if (diff.inMinutes < 60) {
