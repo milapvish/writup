@@ -725,3 +725,25 @@ void markNotifSeen(int notifNbr, String notifType) async {
   print(rowsAsListOfValues);
 
 }
+
+Future<String> postReport(Map newReport) async {
+
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode(newReport);
+  //String encoded = Utf8Encoder().convert(rawJson);
+  var url = baseBackendUrl + '/postReport';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  print("getting response for post");
+  print (response.statusCode);
+  //print(response.body);
+  return "success";
+}

@@ -19,6 +19,10 @@ class ViewArticle extends StatefulWidget {
 class ViewArticleState extends State<ViewArticle> {
   //PageController controller = PageController();
 
+  // These variables are to access article in AppBar for reporting/deletion
+  var thisArticle;
+  bool firstTime = true;
+
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
@@ -30,6 +34,9 @@ class ViewArticleState extends State<ViewArticle> {
     print(thisIndex);
     final _followButtonTextNotifier = ValueNotifier<String>("Follow");
     final _followButtonColorNotifier = ValueNotifier<Color>(Colors.black87);
+
+    //thisArticle = articleList[thisIndex + 1];
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -37,9 +44,42 @@ class ViewArticleState extends State<ViewArticle> {
           'writup',
           style: TextStyle(fontWeight: FontWeight.w900),
         ),
+        actions: [
+          PopupMenuButton(
+            // add icon, by default "3 dot" icon
+            // icon: Icon(Icons.book)
+              itemBuilder: (context){
+                //thisArticle[2]
+                return [
+                  PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("Report"),
+                  ),
+                ];
+              },
+              onSelected:(value) {
+                if (value == 0) {
+                  print("Report is selected.");
+                  Navigator.pushNamed(
+                    context,
+                    '/reportArticle',
+                    arguments: {
+                      'thisArticle': thisArticle,
+                    },
+                  );
+                }
+              }
+          ),
+        ],
       ),
       body: PageView.builder(
         controller: controller,
+        onPageChanged: (itemIndex) {
+          print("page changed ");
+          setState(() {
+            thisArticle = articleList[itemIndex + 1];
+          });
+        },
         itemCount: articleList.length - 1,
         itemBuilder: (BuildContext context, int itemIndex) {
           // define notifiers
@@ -59,10 +99,13 @@ class ViewArticleState extends State<ViewArticle> {
             _bookmarkNotifier.value = false;
           }
           print("bookmark value " + _bookmarkNotifier.value.toString());
-
+          if (firstTime == true) {
+            thisArticle = articleList[itemIndex + 1];
+            firstTime = false;
+          }
           return SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
+              padding: EdgeInsets.symmetric(horizontal: 7.5),
             child: Column(
               children: <Widget>[
                 Padding(padding: EdgeInsets.symmetric(vertical: 10)),

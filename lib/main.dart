@@ -14,6 +14,7 @@ import 'viewFollowers.dart';
 import 'viewFollowing.dart';
 import 'search.dart';
 import 'viewNotifications.dart';
+import 'reportArticle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -70,6 +71,7 @@ class MyApp extends StatelessWidget {
         '/search': (context) => SearchScreen(),
         '/notifications': (context) => ViewNotifications(),
         '/createArticleDetail': (context) => CreateArticleDetail(),
+        '/reportArticle': (context) => ReportArticle(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
