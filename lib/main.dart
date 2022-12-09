@@ -41,31 +41,9 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   //var test = fetchArtList();
-  late FirebaseMessaging messaging;
 
   @override
   Widget build(BuildContext context) {
-
-    messaging = FirebaseMessaging.instance;
-    messaging.getToken().then((value) {
-      print("printing FCM token value");
-      print(value);
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
-      print("message recieved");
-      print(event.notification!.body);
-    });
-    FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      print('Message clicked!');
-      //RemoteNotification notification = message.notification;
-      print(message.messageType);
-      print(message.data);
-      print(message.category);
-      print(message.notification!.body);
-      print(message.notification!.title);
-      print(message.notification!.hashCode);
-    });
 
     Widget firstWidget;
     User? user = FirebaseAuth.instance.currentUser;
@@ -114,6 +92,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     // Below timer only runs once to fetch notif count initially
     final periodicTimer = Timer.periodic(
       const Duration(seconds: 1),

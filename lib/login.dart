@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'main.dart';
 import 'apiCalls.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class AuthScreen extends StatefulWidget {
   //const AuthScreen({Key key}) : super(key: key);
@@ -13,9 +14,11 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
 
   final _auth = FirebaseAuth.instance;
+
   //CheckLoggedIn(user);
 
   var _isLoading = false;
+  late var fcmtoken;
 
   onGoBack(dynamic value) {
     jwtGlobal = '';
@@ -44,9 +47,13 @@ class _AuthScreenState extends State<AuthScreen> {
       });
       if (isLogin) {
         print("attempting login");
+        print("printing password");
+        print(password);
         try {
           userCredential = await _auth.signInWithEmailAndPassword(
               email: email, password: password);
+          // Call to create FCM Token
+          await CreateFCMToken(fcmtoken);
           print("logged in succesfully");
           print(userCredential);
           Navigator.pushNamed(context, '/home').then(onGoBack);
@@ -70,9 +77,11 @@ class _AuthScreenState extends State<AuthScreen> {
         }
       } else {
         try {
+          print("printing password");
+          print(password);
           userCredential = await _auth.createUserWithEmailAndPassword(
               email: email, password: password);
-          await createAccount(email, name);
+          await createAccount(email, name, fcmtoken);
           print("now pushing home page");
           Navigator.pushNamed(context, '/home').then(onGoBack);
         } on FirebaseAuthException catch  (e) {
@@ -118,9 +127,33 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
+  late FirebaseMessaging messaging;
 
   @override
   Widget build(BuildContext context) {
+    // Register for FCM
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      print("printing FCM token value");
+      print(value);
+      fcmtoken = value;
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification!.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+      //RemoteNotification notification = message.notification;
+      print(message.messageType);
+      print(message.data);
+      print(message.category);
+      print(message.notification!.body);
+      print(message.notification!.title);
+      print(message.notification!.hashCode);
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: AuthForm(_submitAuthForm, _isLoading),
