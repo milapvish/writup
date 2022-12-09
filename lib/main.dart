@@ -26,6 +26,7 @@ import 'package:badges/badges.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 HtmlEditorController htmlcontroller = HtmlEditorController();
 String jwtGlobal = '';
@@ -40,8 +41,32 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   //var test = fetchArtList();
+  late FirebaseMessaging messaging;
+
   @override
   Widget build(BuildContext context) {
+
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      print("printing FCM token value");
+      print(value);
+    });
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification!.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+      //RemoteNotification notification = message.notification;
+      print(message.messageType);
+      print(message.data);
+      print(message.category);
+      print(message.notification!.body);
+      print(message.notification!.title);
+      print(message.notification!.hashCode);
+    });
+
     Widget firstWidget;
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -131,10 +156,12 @@ class HomePage extends StatelessWidget {
       child: Scaffold(
         endDrawer: MyDrawer(),
         appBar: PreferredSize(
-          preferredSize: Size.fromHeight(100),
-          child: AppBar(
+          preferredSize: Size.fromHeight(110),
+            child: AppBar(
             backgroundColor: Colors.black87,
-            title: Row(
+            title: Padding(
+            padding: EdgeInsets.only(top: 10, left: 5),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Image.asset('images/writup_logo_inverted.png',
@@ -149,16 +176,20 @@ class HomePage extends StatelessWidget {
                       fontSize: 36),
                 ),),
               ],
-            ),
+            ),),
             actions: [
-              IconButton(
+            Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: IconButton(
                 onPressed: () {
                   print("search pressed");
                   Navigator.pushNamed(context, '/search');
                 },
                 icon: Icon(Icons.search_rounded),
-              ),
-              ValueListenableBuilder(
+              ),),
+          Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: ValueListenableBuilder(
                 valueListenable: _nbrNotificationsNotifier,
                 builder: (context, value, _) {
                   return InkWell(
@@ -199,8 +230,10 @@ class HomePage extends StatelessWidget {
                     ),
                   );
                 },
-              ),
-              Builder(
+              ),),
+          Padding(
+              padding: EdgeInsets.only(top: 10),
+              child: Builder(
                 builder: (context) {
                   return IconButton(
                     onPressed: () {
@@ -210,7 +243,7 @@ class HomePage extends StatelessWidget {
                     icon: Icon(Icons.menu),
                   );
                 },
-              ),
+              ),),
             ],
             bottom: TabBar(
               tabs: [
@@ -237,7 +270,7 @@ class HomePage extends StatelessWidget {
           //label: const Text('4K'),
           child: Icon(Icons.add),
           //child: icon: const Icon(Icons.download),
-          backgroundColor: Colors.red[900],
+          backgroundColor: Colors.black54,
         ),
       ),
     );
@@ -401,7 +434,7 @@ class CreateArticleState extends State<CreateArticle> {
           //label: const Text('4K'),
           child: Icon(Icons.arrow_forward_ios_rounded),
           //child: icon: const Icon(Icons.download),
-          backgroundColor: Colors.red[900],
+          backgroundColor: Colors.black54,
         ),
       ),
     );
@@ -421,10 +454,12 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
   final _formKey1 = GlobalKey<FormState>();
 
   final _isPostingNotifier = ValueNotifier<bool>(false);
+  final _isEmptyNotifier = ValueNotifier<bool>(false);
 
   @override
   Widget build(BuildContext context) {
     _isPostingNotifier.value = false;
+    _isEmptyNotifier.value = false;
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     var newArticle = arg['newArticle'];
     return Form(
@@ -463,6 +498,19 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               ],
             ),
           ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          ValueListenableBuilder(
+            valueListenable: _isPostingNotifier,
+            builder: (context, value, _) {
+              if (_isEmptyNotifier.value == true) {
+              return Text("Writup can't be empty",
+              style: TextStyle(
+                color: Theme.of(context).errorColor,
+              ),);
+              }
+              return Text("");
+            },
+          ),
           //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
         ]),
         floatingActionButton: FloatingActionButton(
@@ -473,12 +521,28 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             String inpHtml = await htmlcontroller.getText();
             newArticle['detail'] = inpHtml;
             print(inpHtml);
-            if (_formKey1.currentState!.validate()) {
-              print("form valid");
-              //print(newArticle['details']);
-              await postArticle(newArticle);
-              int count = 0;
-              Navigator.of(context).popUntil((_) => count++ >= 2);
+            _isEmptyNotifier.value = false;
+            if (inpHtml.length < 1) {
+              _isEmptyNotifier.value = true;
+              _isPostingNotifier.value = false;
+            }
+            else {
+              if (_formKey1.currentState!.validate()) {
+                print("form valid");
+                //print(newArticle['details']);
+                await postArticle(newArticle);
+                final snackBar = SnackBar(
+                  content: const Text('Your Writup has been posted !!'),
+                  backgroundColor: (Colors.black87),
+                  //action: SnackBarAction(
+                  //  label: 'dismiss',
+                  //  onPressed: () {},
+                  // ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                int count = 0;
+                Navigator.of(context).popUntil((_) => count++ >= 2);
+              }
             }
             //Navigator.pushNamed(context, '/createArticle');
           },
@@ -493,7 +557,7 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               }
             },
           ),
-          backgroundColor: Colors.red[900],
+          backgroundColor: Colors.black54,
         ),
       ),
     );

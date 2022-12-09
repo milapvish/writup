@@ -45,30 +45,29 @@ class ReportArticleState extends State<ReportArticle> {
         body: Padding(
           padding: EdgeInsets.symmetric(horizontal: 15),
           child: Column(children: <Widget>[
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          DropdownButtonFormField(
-            isExpanded: true,
-            hint: Text('Select Category'),
-            //value: category[0],
-            onChanged: (newValue) {
-              print("dropdown changed");
-            },
-            items: category.map(
-                  (item) {
-                return DropdownMenuItem(
-                  value: item,
-                  child: new Text(item),
-                );
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            DropdownButtonFormField(
+              isExpanded: true,
+              hint: Text('Select Category'),
+              //value: category[0],
+              onChanged: (newValue) {
+                print("dropdown changed");
               },
-            ).toList(),
-            validator: (value) {
-              if (value == null)
-                return "Please select a category";
-              newReport['category'] = value;
-              return null;
-            },
-          ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+              items: category.map(
+                (item) {
+                  return DropdownMenuItem(
+                    value: item,
+                    child: new Text(item),
+                  );
+                },
+              ).toList(),
+              validator: (value) {
+                if (value == null) return "Please select a category";
+                newReport['category'] = value;
+                return null;
+              },
+            ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 20)),
             SizedBox(
               //height: 500,
               child: TextFormField(
@@ -89,7 +88,8 @@ class ReportArticleState extends State<ReportArticle> {
                 maxLength: 500,
               ),
             ),
-        ]),),
+          ]),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
@@ -99,6 +99,15 @@ class ReportArticleState extends State<ReportArticle> {
               _isPostingNotifier.value = true;
               newReport['post_id'] = thisArticle[0];
               await postReport(newReport);
+              final snackBar = SnackBar(
+                content: const Text('Your report has been submitted'),
+                backgroundColor: (Colors.black87),
+                //action: SnackBarAction(
+                //  label: 'dismiss',
+                //  onPressed: () {},
+               // ),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
               int count = 0;
               Navigator.of(context).popUntil((_) => count++ >= 2);
             }

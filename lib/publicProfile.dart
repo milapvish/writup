@@ -145,6 +145,23 @@ class PublicProfile extends StatelessWidget {
                                     );
                                   },
                                 ),
+                                Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 3)),
+                                Text(snapshot.data['nbr_followers'] + " Followers",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w500,
+                                      fontStyle: FontStyle.italic,
+                                      //letterSpacing: 5,
+                                      //wordSpacing: 2,
+                                      //backgroundColor: Colors.yellow,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.white,
+                                            offset: Offset(1, .5),
+                                            blurRadius: 10)
+                                      ]),),
                               ],
                             ),
                           ],

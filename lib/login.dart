@@ -27,6 +27,8 @@ class _AuthScreenState extends State<AuthScreen> {
     });
   }
 
+  var errorMessage = ' ';
+
   void _submitAuthForm(
       String email,
       String password,
@@ -41,16 +43,56 @@ class _AuthScreenState extends State<AuthScreen> {
         _isLoading = true;
       });
       if (isLogin) {
-        userCredential = await _auth.signInWithEmailAndPassword(
-            email: email, password: password);
-        print("logged in succesfully");
-        Navigator.pushNamed(context, '/home').then(onGoBack);
+        print("attempting login");
+        try {
+          userCredential = await _auth.signInWithEmailAndPassword(
+              email: email, password: password);
+          print("logged in succesfully");
+          print(userCredential);
+          Navigator.pushNamed(context, '/home').then(onGoBack);
+          //return "Success";
+        } on FirebaseAuthException catch  (e) {
+          print('Failed with error code: ${e.code}');
+          print(e.message);
+          String errMessage = '';
+          if (e.message != null) {
+            errMessage = e.message ?? '';
+          }
+          if (e.message != null)
+          ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+            content: Text(errMessage),
+            backgroundColor: Theme.of(ctx).errorColor,
+          ));
+          setState(() {
+            _isLoading = false;
+          });
+          //return e.code;
+        }
       } else {
-        userCredential = await _auth.createUserWithEmailAndPassword(
-            email: email, password: password);
-        await createAccount(email, name);
-        print("now pushing home page");
-        Navigator.pushNamed(context, '/home').then(onGoBack);
+        try {
+          userCredential = await _auth.createUserWithEmailAndPassword(
+              email: email, password: password);
+          await createAccount(email, name);
+          print("now pushing home page");
+          Navigator.pushNamed(context, '/home').then(onGoBack);
+        } on FirebaseAuthException catch  (e) {
+          print('Failed with error code: ${e.code}');
+          print(e.message);
+          String errMessage = '';
+          if (e.message != null) {
+            errMessage = e.message ?? '';
+          }
+          if (e.message != null)
+            ScaffoldMessenger.of(ctx).showSnackBar(SnackBar(
+              content: Text(errMessage),
+              backgroundColor: Theme
+                  .of(ctx)
+                  .errorColor,
+            ));
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     } on PlatformException catch (err) {
       var message = "An error occured please check your credentails";
@@ -137,33 +179,52 @@ class _AuthFormState extends State<AuthForm> {
               Stack(
                 children: <Widget>[
                   Container(
-                    padding: const EdgeInsets.fromLTRB(15.0, 50.0, 0.0, 0.0),
-                    child: const Text('Hi',
-                        style: TextStyle(
-                            color: Color.fromRGBO(253, 111, 150, 1),
-                            fontSize: 80.0,
-                            fontFamily: "Raleway",
-                            fontWeight: FontWeight.bold)),
+                    padding: const EdgeInsets.fromLTRB(15.0, 92.0, 0.0, 0.0),
+                    child: Image.asset(
+                        'images/writup_logo.png',
+                        height: 70,
+                        width: 70),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(15.0, 125.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(100.0, 90.0, 0.0, 0.0),
+                    child: const Text('writup',
+                        style: TextStyle(
+                            fontFamily: 'LeagueSpartan',
+                            fontSize: 80.0,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black87)),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(15.0, 250.0, 0.0, 0.0),
                     child: DefaultTextStyle(
                       style: const TextStyle(
                         fontFamily: "Raleway",
-                        fontSize: 80.0,
+                        fontSize: 45.0,
                         fontWeight: FontWeight.bold,
-                        color: Color.fromRGBO(111, 105, 172, 1),
+                        color: Colors.black54,
                       ),
-                      child: Text("there again"),
+                      child: Text("Welcome"),
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(235.0, 125.0, 0.0, 0.0),
+                    padding: const EdgeInsets.fromLTRB(15.0, 300.0, 0.0, 0.0),
+                    child: DefaultTextStyle(
+                      style: const TextStyle(
+                        fontFamily: "Raleway",
+                        fontSize: 45.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black54,
+                      ),
+                      child: Text("Again"),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(265.0, 240.0, 0.0, 0.0),
                     child: const Text('.',
                         style: TextStyle(
                             fontSize: 80.0,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(111, 105, 172, 1))),
+                            color: Colors.black54),),
                   )
                 ],
               ),
@@ -207,7 +268,7 @@ class _AuthFormState extends State<AuthForm> {
                             TextFormField(
                               key: const ValueKey('name'),
                               decoration: const InputDecoration(
-                                  labelText: 'Full Name',
+                                  labelText: 'NAME',
                                   labelStyle: TextStyle(
                                       fontFamily: 'RobotoCondensed',
                                       fontWeight: FontWeight.bold,
@@ -247,7 +308,10 @@ class _AuthFormState extends State<AuthForm> {
 
                             // ignore: missing_return
                             validator: (value) {
-                              if (value == null || value.isEmpty || value.length < 7) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter a password';
+                              }
+                              if (value.length < 7 && _isLogin == false) {
                                 return 'Please enter a long password';
                               }
                               return null;
@@ -269,7 +333,8 @@ class _AuthFormState extends State<AuthForm> {
                               child: Material(
                                 borderRadius: BorderRadius.circular(20.0),
                                 shadowColor: Colors.black,
-                                color: const Color.fromRGBO(111, 105, 172, 1),
+                                //color: const Color.fromRGBO(111, 105, 172, 1),
+                                color: Colors.black87,
                                 elevation: 10.0,
                                 child: TextButton(
                                   onPressed: _trySubmit,
@@ -307,8 +372,7 @@ class _AuthFormState extends State<AuthForm> {
                                           ? "Create new account"
                                           : "I already have an account",
                                       style: const TextStyle(
-                                          color:
-                                          Color.fromRGBO(253, 111, 150, 1),
+                                          color: Colors.black54,
                                           fontSize: 22,
                                           fontWeight: FontWeight.bold,
                                           fontFamily: 'Raleway'),
