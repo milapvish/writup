@@ -91,9 +91,10 @@ class ViewArticleState extends State<ViewArticle> {
           print(articleList[itemIndex + 1][5]);
           _nbrRatingsNotifier.value = articleList[itemIndex + 1][5].toInt();
           print("aakhir hai kitna " + articleList[itemIndex + 1][4].toString());
-          print("bookmark value " + articleList[itemIndex + 1][10]);
+          //print("bookmark value " + articleList[itemIndex + 1][10]);
           if (articleList[itemIndex + 1][10] == 'True' ||
-              articleList[itemIndex + 1][10] == 'true') {
+              articleList[itemIndex + 1][10] == 'true' ||
+              articleList[itemIndex + 1][10] == 1) {
             _bookmarkNotifier.value = true;
           } else {
             _bookmarkNotifier.value = false;

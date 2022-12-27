@@ -293,6 +293,7 @@ class ArticleListViewCommon extends StatelessWidget {
                         ),
                       ),
                     //Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    if (articleList[index + 1][4] > 0)
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       child: Row(
@@ -405,6 +406,68 @@ class ArticleListViewCommon extends StatelessWidget {
                         ],
                       ),
                     ),
+                    if (articleList[index + 1][4] <= 0)
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Icon(Icons.star),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    " No ratings",
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w400,
+                                        fontStyle: FontStyle.italic,
+                                        //letterSpacing: 5,
+                                        //wordSpacing: 2,
+                                        //backgroundColor: Colors.yellow,
+                                        shadows: [
+                                          Shadow(
+                                              color: Colors.white70,
+                                              offset: Offset(1, .5),
+                                              blurRadius: 10)
+                                        ]),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Spacer(),
+                            Spacer(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                ValueListenableBuilder(
+                                  valueListenable: _bookmarkNotifier,
+                                  builder: (context, value, _) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        _bookmarkNotifier.value =
+                                        !_bookmarkNotifier.value;
+                                        articleList[index + 1][10] =
+                                            _bookmarkNotifier.value.toString();
+                                        toggleBookmark(articleList[index + 1][0],
+                                            _bookmarkNotifier.value);
+                                      },
+                                      icon: _bookmarkNotifier.value == true
+                                          ? Icon(Icons.bookmark)
+                                          : Icon(Icons.bookmark_border),
+                                    );
+                                  },
+                                ),
+                                Icon(Icons.share_rounded),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                   ],
                 ),

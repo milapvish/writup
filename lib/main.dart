@@ -15,6 +15,7 @@ import 'viewFollowing.dart';
 import 'search.dart';
 import 'viewNotifications.dart';
 import 'reportArticle.dart';
+import 'betaFeedback.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -75,6 +76,7 @@ class MyApp extends StatelessWidget {
         '/notifications': (context) => ViewNotifications(),
         '/createArticleDetail': (context) => CreateArticleDetail(),
         '/reportArticle': (context) => ReportArticle(),
+        '/betaFeedback': (context) => BetaFeedback(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -451,7 +453,8 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             style: TextStyle(fontWeight: FontWeight.w900),
           ),
         ),
-        body: Column(children: <Widget>[
+        body: SingleChildScrollView(
+        child: Column(children: <Widget>[
           Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           HtmlEditor(
             controller: htmlcontroller, //required
@@ -464,7 +467,7 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               //initalText: "text content initial, if any",
             ),
             otherOptions: OtherOptions(
-                //height: 900,
+                //height: 700,
                 ),
             htmlToolbarOptions: HtmlToolbarOptions(
               defaultToolbarButtons: [
@@ -491,7 +494,7 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             },
           ),
           //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
-        ]),
+        ],),),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!

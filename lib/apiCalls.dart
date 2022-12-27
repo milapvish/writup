@@ -597,7 +597,7 @@ Future<List<List<dynamic>>> searchArticles(String searchTerm) async {
   String decoded = Utf8Decoder().convert(response.bodyBytes);
   List<List<dynamic>> rowsAsListOfValues = [];
   rowsAsListOfValues = const CsvToListConverter().convert(decoded);
-  //print(rowsAsListOfValues);
+  print(rowsAsListOfValues);
 
   /* await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -780,4 +780,26 @@ Future<List<List<dynamic>>> CreateFCMToken(var fcmtoken) async {
   );  JUST FOR INITIALIZING FIREBASE ONCE */
 
   return rowsAsListOfValues;
+}
+
+Future<String> postFeedback(Map newFeedback) async {
+
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+
+  String rawJson = jsonEncode(newFeedback);
+  //String encoded = Utf8Encoder().convert(rawJson);
+  var url = baseBackendUrl + '/postFeedback';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  print("getting response for post");
+  print (response.statusCode);
+  //print(response.body);
+  return "success";
 }

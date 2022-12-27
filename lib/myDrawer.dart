@@ -374,7 +374,33 @@ class MyDrawer extends StatelessWidget {
               //Navigator.pushNamed(context, '/login');
             },
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 30)),
+          ListTile(
+            leading: Icon(
+              Icons.feedback_rounded,
+            ),
+            title: const Text(
+              'Beta Feedback',
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w500,
+                  //fontStyle: FontStyle.italic,
+                  //letterSpacing: 3,
+                  //wordSpacing: 2,
+                  //backgroundColor: Colors.yellow,
+                  shadows: [
+                    Shadow(
+                        color: Colors.white,
+                        offset: Offset(.5, .5),
+                        blurRadius: 10)
+                  ]),
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, '/betaFeedback');
+              //Navigator.pushNamed(context, '/login');
+            },
+          ),
+          Padding(padding: EdgeInsets.symmetric(vertical: 22)),
           ListTile(
             leading: Icon(
               Icons.logout,
