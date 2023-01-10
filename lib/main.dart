@@ -45,7 +45,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Widget firstWidget;
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -94,7 +93,6 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // Below timer only runs once to fetch notif count initially
     final periodicTimer = Timer.periodic(
       const Duration(seconds: 1),
@@ -138,93 +136,99 @@ class HomePage extends StatelessWidget {
         endDrawer: MyDrawer(),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(110),
-            child: AppBar(
+          child: AppBar(
             backgroundColor: Colors.black87,
             title: Padding(
-            padding: EdgeInsets.only(top: 10, left: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Image.asset('images/writup_logo_inverted.png',
-                    height: 35, width: 35),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30),
-              child: Text(
-                  'writup',
-                  style: TextStyle(
-                      fontFamily: 'LeagueSpartan',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 36),
-                ),),
-              ],
-            ),),
-            actions: [
-            Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: IconButton(
-                onPressed: () {
-                  print("search pressed");
-                  Navigator.pushNamed(context, '/search');
-                },
-                icon: Icon(Icons.search_rounded),
-              ),),
-          Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: ValueListenableBuilder(
-                valueListenable: _nbrNotificationsNotifier,
-                builder: (context, value, _) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        context,
-                        '/notifications',
-                        arguments: {
-                          'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
-                        },
-                      );
-                    },
-                    child: Badge(
-                      showBadge: _showNotificationsNotifier.value,
-                      //shape: BadgeShape.square,
-                      badgeColor: Colors.white,
-                      position: BadgePosition.topEnd(top: 4, end: 2),
-                      borderRadius: BorderRadius.circular(5),
-                      badgeContent: Text(_nbrNotificationsNotifier.value),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.notifications,
-                        ),
-                        //iconSize: 50,
-                        //color: Colors.green,
-                        //splashColor: Colors.purple,
-                        onPressed: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/notifications',
-                            arguments: {
-                              'nbrUnreadNotifs':
-                                  _nbrNotificationsNotifier.value,
-                            },
-                          );
-                        },
-                      ),
+              padding: EdgeInsets.only(top: 10, left: 5),
+              child: FittedBox(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Image.asset('images/writup_logo_inverted.png',
+                      height: 35, width: 35),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30),
+                    child: Text(
+                      'writup',
+                      style: TextStyle(
+                          fontFamily: 'LeagueSpartan',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 36),
                     ),
-                  );
-                },
+                  ),
+                ],
               ),),
-          Padding(
-              padding: EdgeInsets.only(top: 10),
-              child: Builder(
-                builder: (context) {
-                  return IconButton(
-                    onPressed: () {
-                      print("menu pressed");
-                      Scaffold.of(context).openEndDrawer();
-                    },
-                    icon: Icon(Icons.menu),
-                  );
-                },
-              ),),
+            ),
+            actions: [
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: IconButton(
+                  onPressed: () {
+                    print("search pressed");
+                    Navigator.pushNamed(context, '/search');
+                  },
+                  icon: Icon(Icons.search_rounded),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: ValueListenableBuilder(
+                  valueListenable: _nbrNotificationsNotifier,
+                  builder: (context, value, _) {
+                    return InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/notifications',
+                          arguments: {
+                            'nbrUnreadNotifs': _nbrNotificationsNotifier.value,
+                          },
+                        );
+                      },
+                      child: Badge(
+                        showBadge: _showNotificationsNotifier.value,
+                        //shape: BadgeShape.square,
+                        badgeColor: Colors.white,
+                        position: BadgePosition.topEnd(top: 4, end: 2),
+                        borderRadius: BorderRadius.circular(5),
+                        badgeContent: Text(_nbrNotificationsNotifier.value),
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.notifications,
+                          ),
+                          //iconSize: 50,
+                          //color: Colors.green,
+                          //splashColor: Colors.purple,
+                          onPressed: () {
+                            Navigator.pushNamed(
+                              context,
+                              '/notifications',
+                              arguments: {
+                                'nbrUnreadNotifs':
+                                    _nbrNotificationsNotifier.value,
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Builder(
+                  builder: (context) {
+                    return IconButton(
+                      onPressed: () {
+                        print("menu pressed");
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                      icon: Icon(Icons.menu),
+                    );
+                  },
+                ),
+              ),
             ],
             bottom: TabBar(
               tabs: [
@@ -454,47 +458,52 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
           ),
         ),
         body: SingleChildScrollView(
-        child: Column(children: <Widget>[
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          HtmlEditor(
-            controller: htmlcontroller, //required
-            callbacks: Callbacks(onInit: () {
-              //htmlcontroller.setFullScreen();
-            }),
-            htmlEditorOptions: HtmlEditorOptions(
-              hint: "Write as much as you want :)",
-              autoAdjustHeight: true,
-              //initalText: "text content initial, if any",
-            ),
-            otherOptions: OtherOptions(
-                //height: 700,
+          child: Column(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              HtmlEditor(
+                controller: htmlcontroller, //required
+                callbacks: Callbacks(onInit: () {
+                  //htmlcontroller.setFullScreen();
+                }),
+                htmlEditorOptions: HtmlEditorOptions(
+                  hint: "Write as much as you want :)",
+                  autoAdjustHeight: true,
+                  //initalText: "text content initial, if any",
                 ),
-            htmlToolbarOptions: HtmlToolbarOptions(
-              defaultToolbarButtons: [
-                //StyleButtons(),
-                FontButtons(
-                    clearAll: false,
-                    strikethrough: false,
-                    superscript: false,
-                    subscript: false),
-              ],
-            ),
+                otherOptions: OtherOptions(
+                    //height: 700,
+                    ),
+                htmlToolbarOptions: HtmlToolbarOptions(
+                  defaultToolbarButtons: [
+                    //StyleButtons(),
+                    FontButtons(
+                        clearAll: false,
+                        strikethrough: false,
+                        superscript: false,
+                        subscript: false),
+                  ],
+                ),
+              ),
+              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              ValueListenableBuilder(
+                valueListenable: _isPostingNotifier,
+                builder: (context, value, _) {
+                  if (_isEmptyNotifier.value == true) {
+                    return Text(
+                      "Writup can't be empty",
+                      style: TextStyle(
+                        color: Theme.of(context).errorColor,
+                      ),
+                    );
+                  }
+                  return Text("");
+                },
+              ),
+              //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
+            ],
           ),
-          Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-          ValueListenableBuilder(
-            valueListenable: _isPostingNotifier,
-            builder: (context, value, _) {
-              if (_isEmptyNotifier.value == true) {
-              return Text("Writup can't be empty",
-              style: TextStyle(
-                color: Theme.of(context).errorColor,
-              ),);
-              }
-              return Text("");
-            },
-          ),
-          //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
-        ],),),
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
@@ -507,8 +516,7 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             if (inpHtml.length < 1) {
               _isEmptyNotifier.value = true;
               _isPostingNotifier.value = false;
-            }
-            else {
+            } else {
               if (_formKey1.currentState!.validate()) {
                 print("form valid");
                 //print(newArticle['details']);
