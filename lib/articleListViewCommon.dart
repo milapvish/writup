@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'apiCalls.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ArticleListViewCommon extends StatelessWidget {
   var articleList;
@@ -20,6 +22,16 @@ class ArticleListViewCommon extends StatelessWidget {
           _bookmarkNotifier.value = true;
         } else {
           _bookmarkNotifier.value = false;
+        }
+        print("testing follow notifier");
+        print(articleList[index + 1][12]);
+        if (articleList[index + 1][12] != null && articleList[index + 1][12] != '')  {
+          _followButtonTextNotifier.value = "Following";
+          _followButtonColorNotifier.value = Colors.black54;
+        }
+        else {
+          _followButtonTextNotifier.value = "Follow";
+          _followButtonColorNotifier.value = Colors.black87;
         }
         double topPadding = 1;
         if (index == 0) {
@@ -108,8 +120,8 @@ class ArticleListViewCommon extends StatelessWidget {
                             children: <Widget>[
                               CircleAvatar(
                                 backgroundColor: Colors.black54,
-                                child: Text(
-                                    articleList[index + 1][8].toString()[0]),
+                                backgroundImage: NetworkImage(articleList[index + 1][11]),
+                                child: Text(""),
                               ),
                               TextButton(
                                 onPressed: () async {
@@ -142,34 +154,7 @@ class ArticleListViewCommon extends StatelessWidget {
                                       ]),
                                 ),
                               ),
-                              FutureBuilder(
-                                  future: checkUserFollow(
-                                      articleList[index + 1][1]),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Center(child: Text('loading...'));
-                                    } else {
-                                      if (snapshot.hasError)
-                                        return Center(
-                                            child:
-                                            Text('Error: ${snapshot.error}'));
-                                      else
-                                        print('i am here');
-                                      //print(snapshot.data[1][4]);
-                                      print(snapshot.data.length);
-                                      _followButtonTextNotifier.value =
-                                          snapshot.data;
-                                      if (_followButtonTextNotifier.value ==
-                                          "Follow") {
-                                        _followButtonColorNotifier.value =
-                                            Colors.black87;
-                                      } else {
-                                        _followButtonColorNotifier.value =
-                                            Colors.black54;
-                                      }
-                                      return ValueListenableBuilder(
+                              ValueListenableBuilder(
                                         valueListenable: _followButtonTextNotifier,
                                         builder: (context, value, _) {
                                           return ElevatedButton(
@@ -181,11 +166,13 @@ class ArticleListViewCommon extends StatelessWidget {
                                                 "Following";
                                                 _followButtonColorNotifier.value =
                                                     Colors.black54;
+                                                articleList[index + 1][12] = "Following";
                                               } else {
                                                 _followButtonTextNotifier.value =
                                                 "Follow";
                                                 _followButtonColorNotifier.value =
                                                     Colors.black87;
+                                                articleList[index + 1][12] = "";
                                               }
                                               updateUserFollow(
                                                   _followButtonTextNotifier.value,
@@ -201,9 +188,7 @@ class ArticleListViewCommon extends StatelessWidget {
                                                 _followButtonTextNotifier.value),
                                           );
                                         },
-                                      );
-                                    }
-                                  }),
+                                      ),
                             ]),
                       ),
                     ),
@@ -478,4 +463,22 @@ class ArticleListViewCommon extends StatelessWidget {
       },
     );
   }
+}
+
+
+Future<String> fetchDPUrl(user_id) async {
+  final storageRef = FirebaseStorage.instance.ref();
+  print("profilepics/" + user_id.toString() + ".jpeg");
+  final testImagesRef = storageRef.child("profilepics/" + user_id.toString() + ".jpeg");
+
+  var testurl = '';
+  try {
+    testurl = await testImagesRef.getDownloadURL();
+  }
+  catch (e) {
+    final testImagesRef = storageRef.child("profilepics/writup.app.png");
+    testurl = await testImagesRef.getDownloadURL();
+  }
+  print("testurl is " + testurl);
+  return testurl;
 }

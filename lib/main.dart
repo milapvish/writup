@@ -98,14 +98,14 @@ class HomePage extends StatelessWidget {
       const Duration(seconds: 1),
       (timer) async {
         // Update user about remaining time
-        print("printing every 1 secs");
+        //print("printing every 1 secs");
         print(_nbrNotificationsNotifier.value);
         _nbrNotificationsNotifier.value = await getNbrUnreadNotifs();
         if (_nbrNotificationsNotifier.value != '0') {
-          print("inside if");
+          //print("inside if");
           _showNotificationsNotifier.value = true;
         } else {
-          print("inside else");
+          //print("inside else");
           _showNotificationsNotifier.value = false;
         }
         timer.cancel();
@@ -117,14 +117,14 @@ class HomePage extends StatelessWidget {
       const Duration(seconds: 10),
       (timer) async {
         // Update user about remaining time
-        print("printing every 10 secs");
+        //print("printing every 10 secs");
         print(_nbrNotificationsNotifier.value);
         _nbrNotificationsNotifier.value = await getNbrUnreadNotifs();
         if (_nbrNotificationsNotifier.value != '0') {
-          print("inside if");
+          //print("inside if");
           _showNotificationsNotifier.value = true;
         } else {
-          print("inside else");
+          //print("inside else");
           _showNotificationsNotifier.value = false;
         }
       },

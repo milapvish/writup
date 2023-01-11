@@ -2,8 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:writup/main.dart';
 import 'apiCalls.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
+
 
 class MyDrawer extends StatelessWidget {
+
+  ImagePicker picker = ImagePicker();
+  XFile? image;
+  final storage = FirebaseStorage.instance;
+  final _dpUrlNotifier = ValueNotifier<String>("");
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -35,6 +45,7 @@ class MyDrawer extends StatelessWidget {
                         //print(snapshot.data[1][4]);
                         print(snapshot.data);
                         print(snapshot.data.length);
+                        _dpUrlNotifier.value = snapshot.data[1][14];
                         return Column(
                           children: <Widget>[
                             Padding(
@@ -46,32 +57,51 @@ class MyDrawer extends StatelessWidget {
                                   '/publicProfile',
                                   arguments: {
                                     'userId': snapshot.data[1][0],
-                                    'userName':
-                                    snapshot.data[1][2].toString(),
+                                    'userName': snapshot.data[1][2].toString(),
                                   },
                                 );
                               },
-                              child: CircleAvatar(
+                              child: ValueListenableBuilder(
+                              valueListenable: _dpUrlNotifier,
+                              builder: (context, value, _) {
+                                imageCache.clear();
+                                PaintingBinding.instance.imageCache.clear();
+                                imageCache.clearLiveImages();
+                                print("DP URL " + _dpUrlNotifier.value);
+                              return CircleAvatar(
                                 backgroundColor: Colors.white,
+                                //backgroundImage: NetworkImage("https://firebasestorage.googleapis.com/v0/b/writup-hermit-owl.appspot.com/o/profilepics%2Ftest.jpg?alt=media&token=77cfbd62-2b35-4592-bdf4-1c2f9a048ce0"),
+                                backgroundImage: NetworkImage(_dpUrlNotifier.value),
                                 radius: 70,
-                                child: Text(
-                                  snapshot.data[1][2][0],
-                                  style: TextStyle(
-                                      fontSize: 48,
-                                      color: Colors.black54,
-                                      fontWeight: FontWeight.w500,
-                                      //fontStyle: FontStyle.italic,
-                                      //letterSpacing: 5,
-                                      //wordSpacing: 2,
-                                      //backgroundColor: Colors.yellow,
-                                      shadows: [
-                                        Shadow(
-                                            color: Colors.white70,
-                                            offset: Offset(1, .5),
-                                            blurRadius: .1)
-                                      ]),
+                                child: Align(
+                                  alignment: Alignment.bottomRight,
+                                  child: ElevatedButton(
+                                    child: Transform.rotate(
+                                      angle: 4.7,
+                                      child: Icon(
+                                          Icons.mode_edit_outline_outlined),
+                                    ),
+                                    onPressed: () async {
+                                      print("pic edit pressed");
+                                      image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 70, maxHeight: 512, maxWidth: 512);
+                                      final storageRef = FirebaseStorage.instance.ref();
+                                      final testImagesRef = storageRef.child("profilepics/" + snapshot.data[1][0].toString() + ".jpeg");
+                                      testImagesRef.putFile(File(image!.path));
+                                      var testurl = await testImagesRef.getDownloadURL();
+                                      snapshot.data[1][14] = testurl;
+                                      _dpUrlNotifier.value = testurl;
+                                      var profileMap = Map();
+                                      profileMap['dp_url'] = testurl;
+                                      updateProfile(profileMap);
+                                      print(testurl);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      shape: CircleBorder(),
+                                      primary: Colors.orange,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                              );},),
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10)),

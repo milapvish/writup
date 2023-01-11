@@ -188,7 +188,7 @@ Future<List<List<dynamic>>> fetchArticlesByUserID(int userId) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -222,7 +222,7 @@ Future<List<List<dynamic>>> updateUserFollow(String followStr, int userId) async
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -258,7 +258,7 @@ Future<String> checkUserFollow(int userId) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -335,7 +335,7 @@ Future<List<List<dynamic>>> fetchArticlesByHashTag(String hashTag) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -369,7 +369,7 @@ Future<String> checkHashTagFollow(String hashTag) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -397,7 +397,7 @@ Future<List<List<dynamic>>> updateHashTagFollow(String followStr, String hashTag
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -432,7 +432,7 @@ Future<List<List<dynamic>>> fetchFollowingArticles() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -461,7 +461,7 @@ Future<List<List<dynamic>>> fetchMyArticles() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -490,7 +490,7 @@ Future<List<List<dynamic>>> fetchSavedPosts() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -519,7 +519,7 @@ Future<List<List<dynamic>>> fetchMyFollowers() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -548,7 +548,7 @@ Future<List<List<dynamic>>> fetchFollowingUsers() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -578,7 +578,7 @@ Future<List<List<dynamic>>> searchArticles(String searchTerm) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -612,7 +612,7 @@ Future<String> getNbrUnreadNotifs() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -640,7 +640,7 @@ Future<List<List<dynamic>>> fetchNotifications() async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -669,7 +669,7 @@ Future<List<List<dynamic>>> fetchArticleByPostID(int postId) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -703,7 +703,7 @@ void markNotifSeen(int notifNbr, String notifType) async {
   User? user = FirebaseAuth.instance.currentUser;
   if (user != null) {
     final jwt = await user.getIdToken();
-    print("JWT is " + jwt);
+    //print("JWT is " + jwt);
     jwtGlobal = jwt;
   }
 
@@ -793,6 +793,30 @@ Future<String> postFeedback(Map newFeedback) async {
   String rawJson = jsonEncode(newFeedback);
   //String encoded = Utf8Encoder().convert(rawJson);
   var url = baseBackendUrl + '/postFeedback';
+  final response = await http.post(Uri.parse(url),
+      headers: {"Content-Type": "application/json",
+        'Authorization': 'Bearer $jwtGlobal',},
+      body: rawJson
+  );
+  print("getting response for post");
+  print (response.statusCode);
+  //print(response.body);
+  return "success";
+}
+
+
+Future<String> updateProfile(Map profileMap) async {
+
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final jwt = await user.getIdToken();
+    jwtGlobal = jwt;
+  }
+  print('going to update profile');
+  print(profileMap['dp_url']);
+  String rawJson = jsonEncode(profileMap);
+  //String encoded = Utf8Encoder().convert(rawJson);
+  var url = baseBackendUrl + '/updateProfile';
   final response = await http.post(Uri.parse(url),
       headers: {"Content-Type": "application/json",
         'Authorization': 'Bearer $jwtGlobal',},
