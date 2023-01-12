@@ -104,6 +104,15 @@ class ViewArticleState extends State<ViewArticle> {
             thisArticle = articleList[itemIndex + 1];
             firstTime = false;
           }
+
+          _followButtonTextNotifier.value = articleList[itemIndex + 1][12];
+          if (_followButtonTextNotifier.value == "Following")  {
+            _followButtonColorNotifier.value = Colors.black54;
+          }
+          else {
+            _followButtonColorNotifier.value = Colors.black87;
+          }
+
           return SingleChildScrollView(
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 7.5),
@@ -167,8 +176,8 @@ class ViewArticleState extends State<ViewArticle> {
                         children: <Widget>[
                           CircleAvatar(
                             backgroundColor: Colors.black54,
-                            child: Text(
-                                articleList[itemIndex + 1][8].toString()[0]),
+                            backgroundImage: NetworkImage(articleList[itemIndex + 1][11]),
+                            child: Text(""),
                           ),
                           TextButton(
                             onPressed: () async {
@@ -201,34 +210,7 @@ class ViewArticleState extends State<ViewArticle> {
                                   ]),
                             ),
                           ),
-                          FutureBuilder(
-                              future: checkUserFollow(
-                                  articleList[itemIndex + 1][1]),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(child: Text('loading...'));
-                                } else {
-                                  if (snapshot.hasError)
-                                    return Center(
-                                        child:
-                                            Text('Error: ${snapshot.error}'));
-                                  else
-                                    print('i am here');
-                                  //print(snapshot.data[1][4]);
-                                  print(snapshot.data.length);
-                                  _followButtonTextNotifier.value =
-                                      snapshot.data;
-                                  if (_followButtonTextNotifier.value ==
-                                      "Follow") {
-                                    _followButtonColorNotifier.value =
-                                        Colors.black87;
-                                  } else {
-                                    _followButtonColorNotifier.value =
-                                        Colors.black54;
-                                  }
-                                  return ValueListenableBuilder(
+                          ValueListenableBuilder(
                                     valueListenable: _followButtonTextNotifier,
                                     builder: (context, value, _) {
                                       return ElevatedButton(
@@ -240,11 +222,13 @@ class ViewArticleState extends State<ViewArticle> {
                                                 "Following";
                                             _followButtonColorNotifier.value =
                                                 Colors.black54;
+                                            articleList[itemIndex + 1][12] = "Following";
                                           } else {
                                             _followButtonTextNotifier.value =
                                                 "Follow";
                                             _followButtonColorNotifier.value =
                                                 Colors.black87;
+                                            articleList[itemIndex + 1][12] = "Follow";
                                           }
                                           updateUserFollow(
                                               _followButtonTextNotifier.value,
@@ -260,9 +244,7 @@ class ViewArticleState extends State<ViewArticle> {
                                             _followButtonTextNotifier.value),
                                       );
                                     },
-                                  );
-                                }
-                              }),
+                                  ),
                         ]),
                   ),
                 ),
@@ -431,7 +413,7 @@ class ViewArticleState extends State<ViewArticle> {
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: Text('loading...'));
+                          return Center(child: Text(''));
                         } else {
                           if (snapshot.hasError)
                             return Center(
@@ -490,7 +472,7 @@ class ViewArticleState extends State<ViewArticle> {
                       builder: (BuildContext context, AsyncSnapshot snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: Text('loading...'));
+                          return Center(child: Text(''));
                         } else {
                           if (snapshot.hasError)
                             return Center(

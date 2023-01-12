@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:writup/main.dart';
@@ -71,7 +72,7 @@ class MyDrawer extends StatelessWidget {
                               return CircleAvatar(
                                 backgroundColor: Colors.white,
                                 //backgroundImage: NetworkImage("https://firebasestorage.googleapis.com/v0/b/writup-hermit-owl.appspot.com/o/profilepics%2Ftest.jpg?alt=media&token=77cfbd62-2b35-4592-bdf4-1c2f9a048ce0"),
-                                backgroundImage: NetworkImage(_dpUrlNotifier.value),
+                                backgroundImage: CachedNetworkImageProvider(_dpUrlNotifier.value),
                                 radius: 70,
                                 child: Align(
                                   alignment: Alignment.bottomRight,

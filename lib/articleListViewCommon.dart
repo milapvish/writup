@@ -25,18 +25,23 @@ class ArticleListViewCommon extends StatelessWidget {
         }
         print("testing follow notifier");
         print(articleList[index + 1][12]);
-        if (articleList[index + 1][12] != null && articleList[index + 1][12] != '')  {
-          _followButtonTextNotifier.value = "Following";
+        _followButtonTextNotifier.value = articleList[index + 1][12];
+        if (_followButtonTextNotifier.value == "Following")  {
           _followButtonColorNotifier.value = Colors.black54;
         }
         else {
-          _followButtonTextNotifier.value = "Follow";
           _followButtonColorNotifier.value = Colors.black87;
         }
         double topPadding = 1;
         if (index == 0) {
           topPadding = 10;
         }
+
+        if (articleList[index + 1][11] == '') {
+          articleList[index + 1][11] =
+          "https://firebasestorage.googleapis.com/v0/b/writup-hermit-owl.appspot.com/o/profilepics%2Fdefault_1.png?alt=media&token=97bbff09-0b81-47f3-8a20-e05a22ec3e05";
+        }
+
         return Padding(
           padding: EdgeInsets.only(left: 5, top:topPadding, right: 5, bottom: 2),
           child: GestureDetector(
@@ -172,7 +177,7 @@ class ArticleListViewCommon extends StatelessWidget {
                                                 "Follow";
                                                 _followButtonColorNotifier.value =
                                                     Colors.black87;
-                                                articleList[index + 1][12] = "";
+                                                articleList[index + 1][12] = "Follow";
                                               }
                                               updateUserFollow(
                                                   _followButtonTextNotifier.value,
