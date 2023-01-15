@@ -59,6 +59,7 @@ class MyDrawer extends StatelessWidget {
                                   arguments: {
                                     'userId': snapshot.data[1][0],
                                     'userName': snapshot.data[1][2].toString(),
+                                    'dpUrl': snapshot.data[1][14],
                                   },
                                 );
                               },
@@ -72,7 +73,7 @@ class MyDrawer extends StatelessWidget {
                               return CircleAvatar(
                                 backgroundColor: Colors.white,
                                 //backgroundImage: NetworkImage("https://firebasestorage.googleapis.com/v0/b/writup-hermit-owl.appspot.com/o/profilepics%2Ftest.jpg?alt=media&token=77cfbd62-2b35-4592-bdf4-1c2f9a048ce0"),
-                                backgroundImage: CachedNetworkImageProvider(_dpUrlNotifier.value),
+                                backgroundImage: NetworkImage(_dpUrlNotifier.value),
                                 radius: 70,
                                 child: Align(
                                   alignment: Alignment.bottomRight,

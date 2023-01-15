@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:html_editor_enhanced/html_editor.dart';
+//import 'package:html_editor_enhanced/html_editor.dart';
 import 'homeTabView.dart';
 import 'followingTabView.dart';
 import 'myPostsTabView.dart';
@@ -28,8 +28,11 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_quill/flutter_quill.dart' hide Text;
+import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
 
-HtmlEditorController htmlcontroller = HtmlEditorController();
+//HtmlEditorController htmlcontroller = HtmlEditorController();
 String jwtGlobal = '';
 
 void main() async {
@@ -65,6 +68,7 @@ class MyApp extends StatelessWidget {
         '/login': (context) => AuthScreen(),
         '/home': (context) => HomePage(),
         '/createArticle': (context) => CreateArticle(),
+        //'/createArticle': (context) => TextEditorScreen(),
         '/viewArticle': (context) => ViewArticle(),
         '/publicProfile': (context) => PublicProfile(),
         '/hashTagPosts': (context) => HashTagPosts(),
@@ -82,6 +86,7 @@ class MyApp extends StatelessWidget {
         //scaffoldBackgroundColor: Colors.grey[900],
         //fontFamily: GoogleFonts.robotoFlex().fontFamily,
       ),
+      themeMode: ThemeMode.light,
     );
   }
 }
@@ -188,10 +193,24 @@ class HomePage extends StatelessWidget {
                       child: Badge(
                         showBadge: _showNotificationsNotifier.value,
                         //shape: BadgeShape.square,
-                        badgeColor: Colors.white,
+                        badgeColor: Colors.orangeAccent,
                         position: BadgePosition.topEnd(top: 4, end: 2),
                         borderRadius: BorderRadius.circular(5),
-                        badgeContent: Text(_nbrNotificationsNotifier.value),
+                        badgeContent: Text(_nbrNotificationsNotifier.value,
+                          style: TextStyle(
+                              fontSize: 13,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              //fontStyle: FontStyle.italic,
+                              //letterSpacing: 5,
+                              //wordSpacing: 2,
+                              //backgroundColor: Colors.yellow,
+                              shadows: [
+                                Shadow(
+                                    color: Colors.black87,
+                                    offset: Offset(.5, .25),
+                                    blurRadius: 1)
+                              ]),),
                         child: IconButton(
                           icon: Icon(
                             Icons.notifications,
@@ -255,7 +274,7 @@ class HomePage extends StatelessWidget {
           //label: const Text('4K'),
           child: Icon(Icons.add),
           //child: icon: const Icon(Icons.download),
-          backgroundColor: Colors.black54,
+          backgroundColor: floatingButtonColor,
         ),
       ),
     );
@@ -287,7 +306,7 @@ class CreateArticleState extends State<CreateArticle> {
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: const Text(
-            'write article',
+            'New Writup',
             style: TextStyle(fontWeight: FontWeight.w900),
           ),
         ),
@@ -419,7 +438,7 @@ class CreateArticleState extends State<CreateArticle> {
           //label: const Text('4K'),
           child: Icon(Icons.arrow_forward_ios_rounded),
           //child: icon: const Icon(Icons.download),
-          backgroundColor: Colors.black54,
+          backgroundColor: floatingButtonColor,
         ),
       ),
     );
@@ -447,55 +466,64 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
     _isEmptyNotifier.value = false;
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     var newArticle = arg['newArticle'];
+    QuillController _controller = QuillController.basic();
+
     return Form(
       key: _formKey1,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: const Text(
-            'write article',
+            'New Writup',
             style: TextStyle(fontWeight: FontWeight.w900),
           ),
         ),
-        body: SingleChildScrollView(
-          child: Column(
+        body: Column(
             children: <Widget>[
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-              HtmlEditor(
-                controller: htmlcontroller, //required
-                callbacks: Callbacks(onInit: () {
-                  //htmlcontroller.setFullScreen();
-                }),
-                htmlEditorOptions: HtmlEditorOptions(
-                  hint: "Write as much as you want :)",
-                  autoAdjustHeight: true,
-                  //initalText: "text content initial, if any",
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                child: Container(
+                  child: QuillEditor.basic(
+                    controller: _controller,
+                    readOnly: false, // true for view only mode
+                  ),
                 ),
-                otherOptions: OtherOptions(
-                    //height: 700,
-                    ),
-                htmlToolbarOptions: HtmlToolbarOptions(
-                  defaultToolbarButtons: [
-                    //StyleButtons(),
-                    FontButtons(
-                        clearAll: false,
-                        strikethrough: false,
-                        superscript: false,
-                        subscript: false),
-                  ],
+              ),),
+              QuillToolbar.basic(controller: _controller,
+                iconTheme: QuillIconTheme(
+                  //iconSelectedColor: Colors.orangeAccent,
+                  iconSelectedFillColor: Colors.orangeAccent,
                 ),
-              ),
+                showColorButton: false,
+                showBackgroundColorButton: false,
+                showCodeBlock: false,
+                showFontFamily: false,
+                showClearFormat: false,
+                showAlignmentButtons: true,
+                showHeaderStyle: false,
+                showInlineCode: false,
+                showQuote: false,
+                showIndent: false,
+              showSearchButton: false,
+              showLink: false,
+              showListCheck: false,),
               Padding(padding: EdgeInsets.symmetric(vertical: 5)),
               ValueListenableBuilder(
                 valueListenable: _isPostingNotifier,
                 builder: (context, value, _) {
                   if (_isEmptyNotifier.value == true) {
-                    return Text(
+                    return Column(
+                      children: <Widget>[
+                      Text(
                       "Writup can't be empty",
                       style: TextStyle(
                         color: Theme.of(context).errorColor,
                       ),
-                    );
+                    ),
+                        Padding(padding: EdgeInsets.symmetric(vertical: 20))
+                      ],);
                   }
                   return Text("");
                 },
@@ -503,17 +531,24 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
             ],
           ),
-        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
             print('done pressed');
             _isPostingNotifier.value = true;
-            String inpHtml = await htmlcontroller.getText();
+            var deltaJson = await _controller.document.toDelta().toJson();
+            String plainText = _controller.document.toPlainText();
+            final converter = QuillDeltaToHtmlConverter(
+              List.castFrom(deltaJson),
+              ConverterOptions.forEmail(),
+            );
+            String _html = converter.convert();
+            print(_html);
+            String inpHtml = _html;
             newArticle['detail'] = inpHtml;
             print(inpHtml);
             _isEmptyNotifier.value = false;
-            if (inpHtml.length < 1) {
+            if (inpHtml.length < 1 || plainText.trim() == '') {
               _isEmptyNotifier.value = true;
               _isPostingNotifier.value = false;
             } else {
@@ -547,7 +582,7 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               }
             },
           ),
-          backgroundColor: Colors.black54,
+          backgroundColor: floatingButtonColor,
         ),
       ),
     );
@@ -560,3 +595,4 @@ Future<String> getJwt(user) async {
   String jwt1 = jwt;
   return jwt1;
 }
+

@@ -219,14 +219,15 @@ class _AuthFormState extends State<AuthForm> {
                         width: 70),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(100.0, 90.0, 0.0, 0.0),
-                    child: const Text('writup',
+                    padding: const EdgeInsets.fromLTRB(100.0, 90.0, 25.0, 0.0),
+                    child: FittedBox(
+                        child: Text('writup',
                         style: TextStyle(
                             fontFamily: 'LeagueSpartan',
                             fontSize: 80.0,
                             fontWeight: FontWeight.w700,
                             color: Colors.black87)),
-                  ),
+                  ),),
                   Container(
                     padding: const EdgeInsets.fromLTRB(15.0, 250.0, 0.0, 0.0),
                     child: DefaultTextStyle(
@@ -252,13 +253,14 @@ class _AuthFormState extends State<AuthForm> {
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.fromLTRB(265.0, 240.0, 0.0, 0.0),
-                    child: const Text('.',
+                    padding: const EdgeInsets.fromLTRB(265.0, 240.0, 30.0, 0.0),
+                    child: FittedBox(
+                      child: Text('.',
                         style: TextStyle(
                             fontSize: 80.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.black54),),
-                  )
+                  ),),
                 ],
               ),
               Form(

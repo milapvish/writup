@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:writup/main.dart';
@@ -10,6 +11,7 @@ class PublicProfile extends StatelessWidget {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     var userId = arg['userId'];
     var userName = arg['userName'];
+    var dpUrl = arg['dpUrl'];
     print(userName);
     print(userId);
     final _followButtonTextNotifier = ValueNotifier<String>("Follow");
@@ -22,7 +24,7 @@ class PublicProfile extends StatelessWidget {
               future: getAccountDetails(userId),
               builder: (BuildContext context, AsyncSnapshot snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: Text('loading...'));
+                  return Center(child: Text(''));
                 } else {
                   if (snapshot.hasError)
                     return Center(child: Text('Error: ${snapshot.error}'));
@@ -46,24 +48,9 @@ class PublicProfile extends StatelessWidget {
                           children: <Widget>[
                             CircleAvatar(
                               backgroundColor: Colors.black54,
+                              backgroundImage: CachedNetworkImageProvider(dpUrl),
                               radius: 50,
-                              child: Text(
-                                userName[0],
-                                style: TextStyle(
-                                    fontSize: 48,
-                                    color: Colors.white60,
-                                    fontWeight: FontWeight.w500,
-                                    //fontStyle: FontStyle.italic,
-                                    //letterSpacing: 5,
-                                    //wordSpacing: 2,
-                                    //backgroundColor: Colors.yellow,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.white70,
-                                          offset: Offset(1, .5),
-                                          blurRadius: .1)
-                                    ]),
-                              ),
+                              child: Text(""),
                             ),
                             Column(
                               children: <Widget>[
@@ -275,7 +262,7 @@ class PublicProfile extends StatelessWidget {
             future: fetchArticlesByUserID(userId),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: Text('loading...'));
+                return Center(child: Text(''));
               } else {
                 if (snapshot.hasError)
                   return Center(child: Text('Error: ${snapshot.error}'));

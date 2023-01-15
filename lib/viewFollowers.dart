@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'apiCalls.dart';
 import 'articleListViewCommon.dart';
@@ -42,9 +43,9 @@ class ViewFollowers extends StatelessWidget {
                             children: <Widget>[
                               CircleAvatar(
                                 backgroundColor: Colors.black54,
-                                child: Text(snapshot.data[itemIndex + 1][2]
-                                    .toString()[0]),
-                              ),
+                                backgroundImage: CachedNetworkImageProvider(snapshot.data[itemIndex + 1][14]),
+                                child: Text('',
+                              ),),
                               TextButton(
                                 onPressed: () async {
                                   print("pressing writer name ");

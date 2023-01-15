@@ -189,6 +189,7 @@ class ViewArticleState extends State<ViewArticle> {
                                   'userId': articleList[itemIndex + 1][1],
                                   'userName':
                                       articleList[itemIndex + 1][8].toString(),
+                                  'dpUrl': articleList[itemIndex + 1][11],
                                 },
                               );
                             },
@@ -237,6 +238,7 @@ class ViewArticleState extends State<ViewArticle> {
                                         style: ElevatedButton.styleFrom(
                                           //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                                           shape: StadiumBorder(),
+                                          minimumSize: Size(40, 25),
                                           primary:
                                               _followButtonColorNotifier.value,
                                         ),
@@ -424,11 +426,12 @@ class ViewArticleState extends State<ViewArticle> {
                           print(snapshot.data.length);
                           var detailWritup;
                           detailWritup = snapshot.data[1][1];
-                          print(snapshot.data[1][1].substring(0, 3));
+                          /*print(snapshot.data[1][1].substring(0, 3));
                           if (snapshot.data[1][1].substring(0, 3) == '<p>') {
                             print("inside substring");
                             detailWritup = snapshot.data[1][1].substring(3, detailWritup.length);
                           }
+                          */
                           return Align(
                             alignment: Alignment.centerLeft,
                             child: Html(

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:writup/consts.dart';
 import 'apiCalls.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 class BetaFeedback extends StatefulWidget {
   //const CreatArticle({super.key});
@@ -21,6 +25,8 @@ class BetaFeedbackState extends State<BetaFeedback> {
     "Something Else"
   ];
 
+  ImagePicker picker = ImagePicker();
+  var image;
   @override
   Widget build(BuildContext context) {
     _isPostingNotifier.value = false;
@@ -84,6 +90,19 @@ class BetaFeedbackState extends State<BetaFeedback> {
                 maxLength: 500,
               ),
             ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+            ElevatedButton(
+              onPressed: () async {
+                image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 90, maxHeight: 512, maxWidth: 512);
+              },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.orangeAccent,
+              ),
+              child: Text("Screenshots",
+              style: TextStyle(
+                fontSize: 18
+              ),),
+            )
           ]),
         ),
         floatingActionButton: FloatingActionButton(
@@ -93,6 +112,9 @@ class BetaFeedbackState extends State<BetaFeedback> {
             if (_formKey1.currentState!.validate()) {
               print("form valid");
               _isPostingNotifier.value = true;
+              final storageRef = FirebaseStorage.instance.ref();
+              final testImagesRef = storageRef.child("betaFeedbackScreenshots/" + DateTime.now().millisecondsSinceEpoch.toString() + ".jpeg");
+              testImagesRef.putFile(File(image!.path));
               await postFeedback(newFeedback);
               final snackBar = SnackBar(
                 content: const Text('Your feedback has been submitted'),
@@ -118,7 +140,7 @@ class BetaFeedbackState extends State<BetaFeedback> {
               }
             },
           ),
-          backgroundColor: Colors.black54,
+          backgroundColor: floatingButtonColor,
         ),
       ),
     );

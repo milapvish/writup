@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'apiCalls.dart';
 import 'articleListViewCommon.dart';
 import 'package:intl/intl.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class ViewNotifications extends StatefulWidget {
   @override
@@ -26,6 +27,7 @@ class _ViewNotificationsState extends State<ViewNotifications> {
         ),
       ),
       body: RefreshIndicator(
+        color: Colors.black54,
         onRefresh: () async {
           print("refreshing");
           var temp = await fetchNotifications();
@@ -37,7 +39,7 @@ class _ViewNotificationsState extends State<ViewNotifications> {
           future: fetchNotifications(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: Text('loading...'));
+              return Center(child: CircularProgressIndicator(color: Colors.black54,));
             } else {
               if (snapshot.hasError)
                 return Center(child: Text('Error: ${snapshot.error}'));
@@ -205,6 +207,7 @@ class _ViewNotificationsState extends State<ViewNotifications> {
                                 'userId': snapshot.data[index + 1][5],
                                 'userName':
                                 snapshot.data[index + 1][8].toString(),
+                                  'dpUrl' : snapshot.data[index + 1][12],
                                 },);
                           },
                           child: Padding(
@@ -215,7 +218,12 @@ class _ViewNotificationsState extends State<ViewNotifications> {
                               children: <Widget>[
                                 Padding(
                                   padding: EdgeInsets.only(right: 10),
-                                  child: Icon(Icons.person, size: 35),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.black54,
+                                    backgroundImage: CachedNetworkImageProvider(snapshot.data[index + 1][12]),
+                                    radius: 20,
+                                    child: Text(""),
+                                  ),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,

@@ -138,6 +138,7 @@ class ArticleListViewCommon extends StatelessWidget {
                                       'userId': articleList[index + 1][1],
                                       'userName':
                                       articleList[index + 1][8].toString(),
+                                      'dpUrl': articleList[index + 1][11],
                                     },
                                   );
                                 },
@@ -188,6 +189,7 @@ class ArticleListViewCommon extends StatelessWidget {
                                               shape: StadiumBorder(),
                                               primary:
                                               _followButtonColorNotifier.value,
+                                              minimumSize: Size(40, 25),
                                             ),
                                             child: Text(
                                                 _followButtonTextNotifier.value),
