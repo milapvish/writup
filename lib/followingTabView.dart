@@ -14,7 +14,9 @@ class FollowingTabView extends StatefulWidget {
   }
 }
 
-class FollowingTabViewState extends State<FollowingTabView> {
+class FollowingTabViewState extends State<FollowingTabView> with AutomaticKeepAliveClientMixin{
+
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

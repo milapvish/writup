@@ -14,7 +14,9 @@ class MyPostsTabView extends StatefulWidget {
   }
 }
 
-class MyPostsTabViewState extends State<MyPostsTabView> {
+class MyPostsTabViewState extends State<MyPostsTabView> with AutomaticKeepAliveClientMixin {
+
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {

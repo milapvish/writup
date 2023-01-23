@@ -38,6 +38,9 @@ class PublicProfile extends StatelessWidget {
                   } else {
                     _followButtonColorNotifier.value = Colors.black54;
                   }
+                  if (dpUrl == "") {
+                    dpUrl = snapshot.data["dpUrl"];
+                  }
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 15),
                     child: Column(children: <Widget>[
@@ -305,6 +308,7 @@ Future<Map<dynamic, dynamic>> getAccountDetails(int userId) async {
   acctMap['nbr_ratings'] = rowsAsListOfValues[1][7].toString();
   acctMap['nbr_articles'] = rowsAsListOfValues[1][13].toString();
   acctMap['nbr_followers'] = rowsAsListOfValues[1][12].toString();
+  acctMap['dpUrl'] = rowsAsListOfValues[1][14].toString();
 
   print(acctMap);
 

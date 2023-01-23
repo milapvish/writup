@@ -7,6 +7,7 @@ import 'viewArticle.dart';
 import 'apiCalls.dart';
 import 'login.dart';
 import 'myDrawer.dart';
+import 'myDrawerAlt.dart';
 import 'publicProfile.dart';
 import 'hashTagPosts.dart';
 import 'savedPosts.dart';
@@ -139,30 +140,44 @@ class HomePage extends StatelessWidget {
       length: 3,
       child: Scaffold(
         endDrawer: MyDrawer(),
+        drawer: MyDrawerAlt(),
         appBar: PreferredSize(
           preferredSize: Size.fromHeight(110),
           child: AppBar(
             backgroundColor: Colors.black87,
+            leading: Builder(
+              builder: (BuildContext context) {
+                return Padding(
+                  padding: EdgeInsets.only(left: 8, top: 8),
+                  child: IconButton(
+                  onPressed: () {
+                    print("tapped");
+                    Scaffold.of(context).openDrawer();
+                  },
+                    icon: Image.asset('images/writup_logo_inverted.png',
+                      height: 40, width: 40),
+                ),);
+              },
+            ),
             title: Padding(
               padding: EdgeInsets.only(top: 10, left: 5),
               child: FittedBox(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Image.asset('images/writup_logo_inverted.png',
-                      height: 35, width: 35),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30),
-                    child: Text(
-                      'writup',
-                      style: TextStyle(
-                          fontFamily: 'LeagueSpartan',
-                          fontWeight: FontWeight.w700,
-                          fontSize: 36),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(left:5, right: 20),
+                      child: Text(
+                        'writup',
+                        style: TextStyle(
+                            fontFamily: 'LeagueSpartan',
+                            fontWeight: FontWeight.w700,
+                            fontSize: 36),
+                      ),
                     ),
-                  ),
-                ],
-              ),),
+                  ],
+                ),
+              ),
             ),
             actions: [
               Padding(
@@ -196,7 +211,8 @@ class HomePage extends StatelessWidget {
                         badgeColor: Colors.orangeAccent,
                         position: BadgePosition.topEnd(top: 4, end: 2),
                         borderRadius: BorderRadius.circular(5),
-                        badgeContent: Text(_nbrNotificationsNotifier.value,
+                        badgeContent: Text(
+                          _nbrNotificationsNotifier.value,
                           style: TextStyle(
                               fontSize: 13,
                               color: Colors.white,
@@ -210,7 +226,8 @@ class HomePage extends StatelessWidget {
                                     color: Colors.black87,
                                     offset: Offset(.5, .25),
                                     blurRadius: 1)
-                              ]),),
+                              ]),
+                        ),
                         child: IconButton(
                           icon: Icon(
                             Icons.notifications,
@@ -479,58 +496,62 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
           ),
         ),
         body: Column(
-            children: <Widget>[
-              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+          children: <Widget>[
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
                   child: QuillEditor.basic(
                     controller: _controller,
                     readOnly: false, // true for view only mode
                   ),
                 ),
-              ),),
-              QuillToolbar.basic(controller: _controller,
-                iconTheme: QuillIconTheme(
-                  //iconSelectedColor: Colors.orangeAccent,
-                  iconSelectedFillColor: Colors.orangeAccent,
-                ),
-                showColorButton: false,
-                showBackgroundColorButton: false,
-                showCodeBlock: false,
-                showFontFamily: false,
-                showClearFormat: false,
-                showAlignmentButtons: true,
-                showHeaderStyle: false,
-                showInlineCode: false,
-                showQuote: false,
-                showIndent: false,
+              ),
+            ),
+            QuillToolbar.basic(
+              controller: _controller,
+              iconTheme: QuillIconTheme(
+                //iconSelectedColor: Colors.orangeAccent,
+                iconSelectedFillColor: Colors.orangeAccent,
+              ),
+              showColorButton: false,
+              showBackgroundColorButton: false,
+              showCodeBlock: false,
+              showFontFamily: false,
+              showClearFormat: false,
+              showAlignmentButtons: true,
+              showHeaderStyle: false,
+              showInlineCode: false,
+              showQuote: false,
+              showIndent: false,
               showSearchButton: false,
               showLink: false,
-              showListCheck: false,),
-              Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-              ValueListenableBuilder(
-                valueListenable: _isPostingNotifier,
-                builder: (context, value, _) {
-                  if (_isEmptyNotifier.value == true) {
-                    return Column(
-                      children: <Widget>[
+              showListCheck: false,
+            ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+            ValueListenableBuilder(
+              valueListenable: _isPostingNotifier,
+              builder: (context, value, _) {
+                if (_isEmptyNotifier.value == true) {
+                  return Column(
+                    children: <Widget>[
                       Text(
-                      "Writup can't be empty",
-                      style: TextStyle(
-                        color: Theme.of(context).errorColor,
+                        "Writup can't be empty",
+                        style: TextStyle(
+                          color: Theme.of(context).errorColor,
+                        ),
                       ),
-                    ),
-                        Padding(padding: EdgeInsets.symmetric(vertical: 20))
-                      ],);
-                  }
-                  return Text("");
-                },
-              ),
-              //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
-            ],
-          ),
+                      Padding(padding: EdgeInsets.symmetric(vertical: 20))
+                    ],
+                  );
+                }
+                return Text("");
+              },
+            ),
+            //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
+          ],
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
@@ -595,4 +616,3 @@ Future<String> getJwt(user) async {
   String jwt1 = jwt;
   return jwt1;
 }
-

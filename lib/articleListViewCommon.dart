@@ -26,10 +26,9 @@ class ArticleListViewCommon extends StatelessWidget {
         print("testing follow notifier");
         print(articleList[index + 1][12]);
         _followButtonTextNotifier.value = articleList[index + 1][12];
-        if (_followButtonTextNotifier.value == "Following")  {
+        if (_followButtonTextNotifier.value == "Following") {
           _followButtonColorNotifier.value = Colors.black54;
-        }
-        else {
+        } else {
           _followButtonColorNotifier.value = Colors.black87;
         }
         double topPadding = 1;
@@ -39,11 +38,12 @@ class ArticleListViewCommon extends StatelessWidget {
 
         if (articleList[index + 1][11] == '') {
           articleList[index + 1][11] =
-          "https://firebasestorage.googleapis.com/v0/b/writup-hermit-owl.appspot.com/o/profilepics%2Fdefault_1.png?alt=media&token=97bbff09-0b81-47f3-8a20-e05a22ec3e05";
+              "https://firebasestorage.googleapis.com/v0/b/writup-hermit-owl.appspot.com/o/profilepics%2Fdefault_1.png?alt=media&token=97bbff09-0b81-47f3-8a20-e05a22ec3e05";
         }
 
         return Padding(
-          padding: EdgeInsets.only(left: 5, top:topPadding, right: 5, bottom: 2),
+          padding:
+              EdgeInsets.only(left: 5, top: topPadding, right: 5, bottom: 2),
           child: GestureDetector(
             onTap: () {
               print("tapped");
@@ -92,29 +92,29 @@ class ArticleListViewCommon extends StatelessWidget {
                     ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     if (articleList[index + 1][3] != '')
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          articleList[index + 1][3],
-                          style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.black54,
-                              fontWeight: FontWeight.w400,
-                              fontStyle: FontStyle.italic,
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            articleList[index + 1][3],
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w400,
+                                fontStyle: FontStyle.italic,
 //letterSpacing: 5,
 //wordSpacing: 2,
 //backgroundColor: Colors.yellow,
-                              shadows: [
-                                Shadow(
-                                    color: Colors.white70,
-                                    offset: Offset(1, .5),
-                                    blurRadius: 10)
-                              ]),
+                                shadows: [
+                                  Shadow(
+                                      color: Colors.white70,
+                                      offset: Offset(1, .5),
+                                      blurRadius: 10)
+                                ]),
+                          ),
                         ),
                       ),
-                    ),
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 10),
@@ -125,7 +125,8 @@ class ArticleListViewCommon extends StatelessWidget {
                             children: <Widget>[
                               CircleAvatar(
                                 backgroundColor: Colors.black54,
-                                backgroundImage: NetworkImage(articleList[index + 1][11]),
+                                backgroundImage:
+                                    NetworkImage(articleList[index + 1][11]),
                                 child: Text(""),
                               ),
                               TextButton(
@@ -137,7 +138,7 @@ class ArticleListViewCommon extends StatelessWidget {
                                     arguments: {
                                       'userId': articleList[index + 1][1],
                                       'userName':
-                                      articleList[index + 1][8].toString(),
+                                          articleList[index + 1][8].toString(),
                                       'dpUrl': articleList[index + 1][11],
                                     },
                                   );
@@ -161,41 +162,41 @@ class ArticleListViewCommon extends StatelessWidget {
                                 ),
                               ),
                               ValueListenableBuilder(
-                                        valueListenable: _followButtonTextNotifier,
-                                        builder: (context, value, _) {
-                                          return ElevatedButton(
-                                            onPressed: () async {
-                                              print("follow pressed");
-                                              if (_followButtonTextNotifier.value ==
-                                                  "Follow") {
-                                                _followButtonTextNotifier.value =
-                                                "Following";
-                                                _followButtonColorNotifier.value =
-                                                    Colors.black54;
-                                                articleList[index + 1][12] = "Following";
-                                              } else {
-                                                _followButtonTextNotifier.value =
-                                                "Follow";
-                                                _followButtonColorNotifier.value =
-                                                    Colors.black87;
-                                                articleList[index + 1][12] = "Follow";
-                                              }
-                                              updateUserFollow(
-                                                  _followButtonTextNotifier.value,
-                                                  articleList[index + 1][1]);
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                              //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                                              shape: StadiumBorder(),
-                                              primary:
-                                              _followButtonColorNotifier.value,
-                                              minimumSize: Size(40, 25),
-                                            ),
-                                            child: Text(
-                                                _followButtonTextNotifier.value),
-                                          );
-                                        },
-                                      ),
+                                valueListenable: _followButtonTextNotifier,
+                                builder: (context, value, _) {
+                                  return ElevatedButton(
+                                    onPressed: () async {
+                                      print("follow pressed");
+                                      if (_followButtonTextNotifier.value ==
+                                          "Follow") {
+                                        _followButtonTextNotifier.value =
+                                            "Following";
+                                        _followButtonColorNotifier.value =
+                                            Colors.black54;
+                                        articleList[index + 1][12] =
+                                            "Following";
+                                      } else {
+                                        _followButtonTextNotifier.value =
+                                            "Follow";
+                                        _followButtonColorNotifier.value =
+                                            Colors.black87;
+                                        articleList[index + 1][12] = "Follow";
+                                      }
+                                      updateUserFollow(
+                                          _followButtonTextNotifier.value,
+                                          articleList[index + 1][1]);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                      shape: StadiumBorder(),
+                                      primary: _followButtonColorNotifier.value,
+                                      minimumSize: Size(40, 25),
+                                    ),
+                                    child:
+                                        Text(_followButtonTextNotifier.value),
+                                  );
+                                },
+                              ),
                             ]),
                       ),
                     ),
@@ -227,14 +228,16 @@ class ArticleListViewCommon extends StatelessWidget {
                     Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     // below if condition handles extra </p> html tag at the end
                     if (articleList[index + 1][7].length > 4)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 1),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Html(
-                          data: articleList[index + 1][7].substring(0, articleList[index + 1][7].length -4) + '...',
-                        ),
-                                /*child: Text(
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 1),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Html(
+                            data: articleList[index + 1][7].substring(
+                                    0, articleList[index + 1][7].length - 4) +
+                                '...',
+                          ),
+                          /*child: Text(
                                 articleList[index + 1]
                                         [12] + //.substring(0, 200) +
                                     '...',
@@ -253,8 +256,8 @@ class ArticleListViewCommon extends StatelessWidget {
                                           blurRadius: 10)
                                     ]),
                               ),*/
+                        ),
                       ),
-                    ),
                     if (articleList[index + 1][7].length <= 4)
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 1),
@@ -286,58 +289,26 @@ class ArticleListViewCommon extends StatelessWidget {
                       ),
                     //Padding(padding: EdgeInsets.symmetric(vertical: 5)),
                     if (articleList[index + 1][4] > 0)
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              Icon(Icons.star),
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                      " " + articleList[index + 1][4].toString(),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          //color: Colors.white,
-                                          fontWeight: FontWeight.w400,
-                                          //fontStyle: FontStyle.italic,
-                                          //letterSpacing: 5,
-                                          //wordSpacing: 2,
-                                          //backgroundColor: Colors.yellow,
-                                          shadows: [
-                                            Shadow(
-                                                color: Colors.white70,
-                                                offset: Offset(1, .5),
-                                                blurRadius: 10)
-                                          ]),
-                                    ),
-                              ),
-                              Text(
-                                " by",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.italic,
-                                    //letterSpacing: 3,
-                                    //wordSpacing: 2,
-                                    //backgroundColor: Colors.yellow,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.white70,
-                                          offset: Offset(1, .5),
-                                          blurRadius: 10)
-                                    ]),
-                              ),
-                              Text(
-                                    " " + articleList[index + 1][5].toString(),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    " " + articleList[index + 1][4].toString(),
                                     style: TextStyle(
                                         fontSize: 16,
-                                        //color: Colors.white,
-                                        fontWeight: FontWeight.w400,
+                                        color: Colors.black54,
+                                        fontWeight: FontWeight.w600,
                                         //fontStyle: FontStyle.italic,
                                         //letterSpacing: 5,
                                         //wordSpacing: 2,
@@ -349,55 +320,128 @@ class ArticleListViewCommon extends StatelessWidget {
                                               blurRadius: 10)
                                         ]),
                                   ),
-                              Text(
-                                " readers",
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black54,
-                                    fontWeight: FontWeight.w400,
-                                    fontStyle: FontStyle.italic,
-                                    //letterSpacing: 3,
-                                    //wordSpacing: 2,
-                                    //backgroundColor: Colors.yellow,
-                                    shadows: [
-                                      Shadow(
-                                          color: Colors.white70,
-                                          offset: Offset(1, .5),
-                                          blurRadius: 10)
-                                    ]),
-                              ),
-                            ],
-                          ),
-                          Spacer(),
-                          Spacer(),
-                          Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: <Widget>[
-                              ValueListenableBuilder(
-                                valueListenable: _bookmarkNotifier,
-                                builder: (context, value, _) {
-                                  return IconButton(
-                                    onPressed: () {
-                                      _bookmarkNotifier.value =
-                                      !_bookmarkNotifier.value;
-                                      articleList[index + 1][10] =
-                                          _bookmarkNotifier.value.toString();
-                                      toggleBookmark(articleList[index + 1][0],
-                                          _bookmarkNotifier.value);
-                                    },
-                                    icon: _bookmarkNotifier.value == true
-                                        ? Icon(Icons.bookmark)
-                                        : Icon(Icons.bookmark_border),
-                                  );
-                                },
-                              ),
-                              Icon(Icons.share_rounded),
-                            ],
-                          ),
-                        ],
+                                ),
+                                Text(
+                                  " by",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.italic,
+                                      //letterSpacing: 3,
+                                      //wordSpacing: 2,
+                                      //backgroundColor: Colors.yellow,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.white70,
+                                            offset: Offset(1, .5),
+                                            blurRadius: 10)
+                                      ]),
+                                ),
+                                Text(
+                                  " " + articleList[index + 1][5].toString(),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w600,
+                                      //fontStyle: FontStyle.italic,
+                                      //letterSpacing: 5,
+                                      //wordSpacing: 2,
+                                      //backgroundColor: Colors.yellow,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.white70,
+                                            offset: Offset(1, .5),
+                                            blurRadius: 10)
+                                      ]),
+                                ),
+                                Text(
+                                  " readers",
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.italic,
+                                      //letterSpacing: 3,
+                                      //wordSpacing: 2,
+                                      //backgroundColor: Colors.yellow,
+                                      shadows: [
+                                        Shadow(
+                                            color: Colors.white70,
+                                            offset: Offset(1, .5),
+                                            blurRadius: 10)
+                                      ]),
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Spacer(),
+                            Spacer(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                ValueListenableBuilder(
+                                  valueListenable: _bookmarkNotifier,
+                                  builder: (context, value, _) {
+                                    return IconButton(
+                                      onPressed: () {
+                                        _bookmarkNotifier.value =
+                                            !_bookmarkNotifier.value;
+                                        articleList[index + 1][10] =
+                                            _bookmarkNotifier.value.toString();
+                                        toggleBookmark(
+                                            articleList[index + 1][0],
+                                            _bookmarkNotifier.value);
+                                      },
+                                      icon: _bookmarkNotifier.value == true
+                                          ? Icon(
+                                              Icons.bookmark,
+                                              color: Colors.blueAccent,
+                                            )
+                                          : Icon(
+                                              Icons.bookmark_border,
+                                              color: Colors.black45,
+                                            ),
+                                    );
+                                  },
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Unavailable"),
+                                          content:
+                                              Text("Share not available in closed Beta"),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                              child: Text("OK"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                                shape: StadiumBorder(),
+                                                backgroundColor: Colors.black54,
+                                                minimumSize: Size(50, 35),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.share_rounded,
+                                    color: Colors.black45,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
                     if (articleList[index + 1][4] <= 0)
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10),
@@ -407,7 +451,10 @@ class ArticleListViewCommon extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: <Widget>[
-                                Icon(Icons.star),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
@@ -442,19 +489,57 @@ class ArticleListViewCommon extends StatelessWidget {
                                     return IconButton(
                                       onPressed: () {
                                         _bookmarkNotifier.value =
-                                        !_bookmarkNotifier.value;
+                                            !_bookmarkNotifier.value;
                                         articleList[index + 1][10] =
                                             _bookmarkNotifier.value.toString();
-                                        toggleBookmark(articleList[index + 1][0],
+                                        toggleBookmark(
+                                            articleList[index + 1][0],
                                             _bookmarkNotifier.value);
                                       },
                                       icon: _bookmarkNotifier.value == true
-                                          ? Icon(Icons.bookmark)
-                                          : Icon(Icons.bookmark_border),
+                                          ? Icon(
+                                              Icons.bookmark,
+                                              color: Colors.blueAccent,
+                                            )
+                                          : Icon(
+                                              Icons.bookmark_border,
+                                              color: Colors.black45,
+                                            ),
                                     );
                                   },
                                 ),
-                                Icon(Icons.share_rounded),
+                                IconButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text("Unavailable"),
+                                          content:
+                                          Text("Share not available in closed Beta"),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                              child: Text("OK"),
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                                shape: StadiumBorder(),
+                                                backgroundColor: Colors.black54,
+                                                minimumSize: Size(50, 35),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.share_rounded,
+                                    color: Colors.black45,
+                                  ),
+                                ),
                               ],
                             ),
                           ],
@@ -472,17 +557,16 @@ class ArticleListViewCommon extends StatelessWidget {
   }
 }
 
-
 Future<String> fetchDPUrl(user_id) async {
   final storageRef = FirebaseStorage.instance.ref();
   print("profilepics/" + user_id.toString() + ".jpeg");
-  final testImagesRef = storageRef.child("profilepics/" + user_id.toString() + ".jpeg");
+  final testImagesRef =
+      storageRef.child("profilepics/" + user_id.toString() + ".jpeg");
 
   var testurl = '';
   try {
     testurl = await testImagesRef.getDownloadURL();
-  }
-  catch (e) {
+  } catch (e) {
     final testImagesRef = storageRef.child("profilepics/writup.app.png");
     testurl = await testImagesRef.getDownloadURL();
   }

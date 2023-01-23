@@ -284,7 +284,8 @@ class ViewArticleState extends State<ViewArticle> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(Icons.star),
+                          Icon(Icons.star,
+                            color: Colors.amber,),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: ValueListenableBuilder(
@@ -301,8 +302,8 @@ class ViewArticleState extends State<ViewArticle> {
                                   " " + (valueStr),
                                   style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black87,
-                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w600,
                                       //fontStyle: FontStyle.italic,
                                       //letterSpacing: 5,
                                       //wordSpacing: 2,
@@ -341,8 +342,8 @@ class ViewArticleState extends State<ViewArticle> {
                                 " " + value.toString(),
                                 style: TextStyle(
                                     fontSize: 16,
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w600,
                                     //fontStyle: FontStyle.italic,
                                     //letterSpacing: 5,
                                     //wordSpacing: 2,
@@ -394,12 +395,45 @@ class ViewArticleState extends State<ViewArticle> {
                                       _bookmarkNotifier.value);
                                 },
                                 icon: _bookmarkNotifier.value == true
-                                    ? Icon(Icons.bookmark)
-                                    : Icon(Icons.bookmark_border),
+                                    ? Icon(Icons.bookmark,
+                                color: Colors.blueAccent)
+                                    : Icon(Icons.bookmark_border,
+                                    color: Colors.black45),
                               );
                             },
                           ),
-                          Icon(Icons.share_rounded),
+                          IconButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text("Unavailable"),
+                                    content:
+                                    Text("Share not available in closed Beta"),
+                                    actions: <Widget>[
+                                      ElevatedButton(
+                                        child: Text("OK"),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                          shape: StadiumBorder(),
+                                          backgroundColor: Colors.black54,
+                                          minimumSize: Size(50, 35),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.share_rounded,
+                              color: Colors.black45,
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -508,7 +542,7 @@ class ViewArticleState extends State<ViewArticle> {
                                           style: ElevatedButton.styleFrom(
                                             //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
                                             shape: StadiumBorder(),
-                                            primary: Colors.black54,
+                                            backgroundColor: Colors.black54,
                                           ),
                                           child:
                                               Text(snapshot.data[index][0]),
@@ -535,7 +569,8 @@ class ViewArticleState extends State<ViewArticle> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          Icon(Icons.star),
+                          Icon(Icons.star,
+                            color: Colors.amber,),
                           Align(
                             alignment: Alignment.centerLeft,
                             child: ValueListenableBuilder(
@@ -552,8 +587,8 @@ class ViewArticleState extends State<ViewArticle> {
                                   " " + (valueStr),
                                   style: TextStyle(
                                       fontSize: 16,
-                                      //color: Colors.white,
-                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black54,
+                                      fontWeight: FontWeight.w600,
                                       //fontStyle: FontStyle.italic,
                                       //letterSpacing: 5,
                                       //wordSpacing: 2,
@@ -592,8 +627,8 @@ class ViewArticleState extends State<ViewArticle> {
                                 " " + value.toString(),
                                 style: TextStyle(
                                     fontSize: 16,
-                                    //color: Colors.white,
-                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black54,
+                                    fontWeight: FontWeight.w600,
                                     //fontStyle: FontStyle.italic,
                                     //letterSpacing: 5,
                                     //wordSpacing: 2,
@@ -645,12 +680,45 @@ class ViewArticleState extends State<ViewArticle> {
                                       _bookmarkNotifier.value);
                                 },
                                 icon: _bookmarkNotifier.value == true
-                                    ? Icon(Icons.bookmark)
-                                    : Icon(Icons.bookmark_border),
+                                    ? Icon(Icons.bookmark,
+                                color: Colors.blueAccent,)
+                                    : Icon(Icons.bookmark_border,
+                                color: Colors.black45,),
                               );
                             },
                           ),
-                          Icon(Icons.share_rounded),
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text("Unavailable"),
+                            content:
+                            Text("Share not available in closed Beta"),
+                            actions: <Widget>[
+                              ElevatedButton(
+                                child: Text("OK"),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                  shape: StadiumBorder(),
+                                  backgroundColor: Colors.black54,
+                                  minimumSize: Size(50, 35),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Icons.share_rounded,
+                      color: Colors.black45,
+                    ),
+                  ),
                         ],
                       ),
                     ],
@@ -661,7 +729,7 @@ class ViewArticleState extends State<ViewArticle> {
                   "YOUR RATING",
                   style: TextStyle(
                       fontSize: 20,
-                      //color: Colors.white,
+                      color: Colors.black54,
                       fontWeight: FontWeight.w600,
                       //fontStyle: FontStyle.italic,
                       letterSpacing: 3,
@@ -681,10 +749,11 @@ class ViewArticleState extends State<ViewArticle> {
                   allowHalfRating: true,
                   itemCount: 10,
                   itemSize: 30.0,
+                  //unratedColor: Color.fromRGBO(255,215,128,.5),
                   //itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
                   itemBuilder: (context, _) => Icon(
                     Icons.star,
-                    color: Colors.black,
+                    color: Colors.amberAccent,
                   ),
                   onRatingUpdate: (myrating) {
                     print("my rating is : ");
@@ -715,7 +784,7 @@ class ViewArticleState extends State<ViewArticle> {
                   "GLOBAL RATING",
                   style: TextStyle(
                       fontSize: 20,
-                      //color: Colors.white,
+                      color: Colors.black54,
                       fontWeight: FontWeight.w600,
                       //fontStyle: FontStyle.italic,
                       letterSpacing: 3,
@@ -735,7 +804,7 @@ class ViewArticleState extends State<ViewArticle> {
                       rating: _ratingNotifier.value,
                       itemBuilder: (context, index) => Icon(
                         Icons.star,
-                        color: Colors.black,
+                          color: Colors.amberAccent,
                       ),
                       itemCount: 10,
                       itemSize: 30.0,
