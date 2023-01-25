@@ -49,7 +49,24 @@ class FollowingTabViewState extends State<FollowingTabView> with AutomaticKeepAl
           else
           {
             return Center(
-              child: Text("Writups from hashtags and people you follow appear here"),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  Text("Writups from hashtags and people you follow appear here"),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    IconButton(
+                      onPressed: () async {
+                        var temp = await fetchFollowingArticles();
+                        setState(() {
+                          data = temp;
+                        });
+                      },
+                      icon: Icon(Icons.refresh_rounded,
+                      size: 40,
+                      color: Colors.black54,),
+                    )
+              ],),
             );
           }
         }
