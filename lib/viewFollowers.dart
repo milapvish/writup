@@ -57,7 +57,6 @@ class ViewFollowers extends StatelessWidget {
                                       'userName': snapshot.data[itemIndex +
                                           1][2]
                                           .toString(),
-                                      'dpUrl' : snapshot.data[itemIndex + 1][14].toString()
                                     },
                                   );
                                 },
