@@ -138,9 +138,9 @@ class MyDrawer extends StatelessWidget {
                                     Text(
                                       ' ' + snapshot.data[1][6].toString(),
                                       style: TextStyle(
-                                          fontSize: 20,
+                                          fontSize: 22,
                                           color: Colors.white,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                           //fontStyle: FontStyle.italic,
                                           //letterSpacing: 5,
                                           //wordSpacing: 2,

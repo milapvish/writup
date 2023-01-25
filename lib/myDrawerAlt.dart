@@ -27,8 +27,9 @@ class MyDrawerAlt extends StatelessWidget {
                 print(snapshot.data);
                 print(snapshot.data.length);
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 15)),
                     Text("Trending Users",
                       style: TextStyle(
                           fontSize: 18,
@@ -44,11 +45,11 @@ class MyDrawerAlt extends StatelessWidget {
                                 offset: Offset(1, .5),
                                 blurRadius: 10)
                           ]),),
-                    Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 9)),
                     Wrap(
                       direction: Axis.horizontal,
-                      spacing: 4,
-                      runSpacing: 1,
+                      spacing: 6,
+                      runSpacing: 5,
                       children: <Widget>[
                         for (int index = 1; index < snapshot.data.length; index++)
                           if (snapshot.data[index][0] == "user")
@@ -68,14 +69,15 @@ class MyDrawerAlt extends StatelessWidget {
                             },
                             style: ElevatedButton.styleFrom(
                               //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                              minimumSize: Size(30,35),
                               shape: StadiumBorder(),
-                              backgroundColor: Colors.black54,
+                              backgroundColor: Colors.orange,
                             ),
-                            child: Text(snapshot.data[index][3]),
+                            child: Text(snapshot.data[index][3].toString().trim()),
                           ),
                       ],
                     ),
-                    Padding(padding: EdgeInsets.symmetric(vertical: 20)),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 25)),
                     Text("Trending Tags",
                       style: TextStyle(
                           fontSize: 18,
@@ -91,11 +93,11 @@ class MyDrawerAlt extends StatelessWidget {
                                 offset: Offset(1, .5),
                                 blurRadius: 10)
                           ]),),
-                    Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+                    Padding(padding: EdgeInsets.symmetric(vertical: 9)),
                     Wrap(
                       direction: Axis.horizontal,
-                      spacing: 4,
-                      runSpacing: 1,
+                      spacing: 6,
+                      runSpacing: 5,
                       children: <Widget>[
                         for (int index = 1; index < snapshot.data.length; index++)
                           if (snapshot.data[index][0] == "tag")
@@ -112,8 +114,9 @@ class MyDrawerAlt extends StatelessWidget {
                               },
                               style: ElevatedButton.styleFrom(
                                 //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+                                minimumSize: Size(30,35),
                                 shape: StadiumBorder(),
-                                backgroundColor: Colors.black54,
+                                backgroundColor: Colors.orangeAccent,
                               ),
                               child: Text(snapshot.data[index][1]),
                             ),

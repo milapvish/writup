@@ -102,7 +102,9 @@ class _ViewNotificationsState extends State<ViewNotifications> {
                                 Padding(
                                   padding: EdgeInsets.only(right: 10),
                                   child:
-                                      Icon(Icons.star_rate_rounded, size: 35),
+                                      Icon(Icons.star_rate_rounded,
+                                          size: 35,
+                                      color: Colors.orangeAccent,),
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
