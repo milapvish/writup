@@ -27,7 +27,8 @@ class MyDrawerAlt extends StatelessWidget {
                 print(snapshot.data);
                 print(snapshot.data.length);
                 return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Padding(padding: EdgeInsets.symmetric(vertical: 15)),
                     Text("Trending Users",
@@ -47,6 +48,7 @@ class MyDrawerAlt extends StatelessWidget {
                           ]),),
                     Padding(padding: EdgeInsets.symmetric(vertical: 9)),
                     Wrap(
+                      //runAlignment: WrapAlignment.center,
                       direction: Axis.horizontal,
                       spacing: 6,
                       runSpacing: 5,

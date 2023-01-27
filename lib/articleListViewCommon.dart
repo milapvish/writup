@@ -4,10 +4,12 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArticleListViewCommon extends StatelessWidget {
   var articleList;
   ArticleListViewCommon(this.articleList);
+
 
   @override
   Widget build(BuildContext context) {
@@ -210,8 +212,8 @@ class ArticleListViewCommon extends StatelessWidget {
                               DateTime.parse(articleList[index + 1][6])),
                           style: TextStyle(
                               fontSize: 16,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w400,
+                              color: Colors.black54,
+                              fontWeight: FontWeight.w500,
                               fontStyle: FontStyle.italic,
                               //letterSpacing: 5,
                               //wordSpacing: 2,
@@ -233,6 +235,11 @@ class ArticleListViewCommon extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Html(
+                            onLinkTap: (url, _, __, ___) async {
+                              if (!await launchUrl(Uri.parse(url!))) {
+                                throw Exception('Could not launch $url');
+                              }
+                            },
                             data: articleList[index + 1][7].substring(
                                     0, articleList[index + 1][7].length - 4) +
                                 '...',

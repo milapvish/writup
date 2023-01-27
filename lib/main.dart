@@ -512,8 +512,8 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             QuillToolbar.basic(
               controller: _controller,
               iconTheme: QuillIconTheme(
-                //iconSelectedColor: Colors.orangeAccent,
-                iconSelectedFillColor: Colors.orangeAccent,
+                iconSelectedColor: Colors.orangeAccent,
+                iconSelectedFillColor: Colors.white10,
               ),
               showColorButton: false,
               showBackgroundColorButton: false,
@@ -526,8 +526,13 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
               showQuote: false,
               showIndent: false,
               showSearchButton: false,
-              showLink: false,
+              showLink: true,
               showListCheck: false,
+                multiRowsDisplay: false,
+                customButtons: [
+
+                ],
+                //fontSizeValues: const {'Large': '24', 'Huge' : '30', 'Clear': '0'},
             ),
             Padding(padding: EdgeInsets.symmetric(vertical: 5)),
             ValueListenableBuilder(
@@ -552,7 +557,9 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             //Padding(padding: EdgeInsets.symmetric(vertical: 60)),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 50),
+          child: FloatingActionButton(
           onPressed: () async {
             // Add your onPressed code here!
             print('done pressed');
@@ -604,7 +611,7 @@ class CreateArticleDetailState extends State<CreateArticleDetail> {
             },
           ),
           backgroundColor: floatingButtonColor,
-        ),
+        ),),
       ),
     );
   }

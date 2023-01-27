@@ -5,6 +5,7 @@ import 'package:html/parser.dart' as htmlparser;
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ViewArticle extends StatefulWidget {
   //const ViewArticle({super.key});
@@ -470,9 +471,14 @@ class ViewArticleState extends State<ViewArticle> {
                             alignment: Alignment.centerLeft,
                             child: Html(
                               data: detailWritup,
+                              onLinkTap: (url, _, __, ___) async {
+                                if (!await launchUrl(Uri.parse(url!))) {
+                                  throw Exception('Could not launch $url');
+                                }
+                              },
                               style: {
                                 "body": Style(
-                                  fontSize: FontSize(17.0),
+                                  fontSize: FontSize(15.0),
                                   //fontWeight: FontWeight.bold,
                                 ),
                               },
