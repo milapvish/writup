@@ -813,7 +813,7 @@ Future<String> updateProfile(Map profileMap) async {
     jwtGlobal = jwt;
   }
   print('going to update profile');
-  print(profileMap['dp_url']);
+  print(profileMap);
   String rawJson = jsonEncode(profileMap);
   //String encoded = Utf8Encoder().convert(rawJson);
   var url = baseBackendUrl + '/updateProfile';

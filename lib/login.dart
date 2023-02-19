@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'main.dart';
 import 'apiCalls.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthScreen extends StatefulWidget {
   //const AuthScreen({Key key}) : super(key: key);
@@ -82,6 +83,11 @@ class _AuthScreenState extends State<AuthScreen> {
           userCredential = await _auth.createUserWithEmailAndPassword(
               email: email, password: password);
           await createAccount(email, name, fcmtoken);
+          // Update Shared Pref
+          // Obtain shared preferences.
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('email', email);
+          await prefs.setString('name', name);
           print("now pushing home page");
           Navigator.pushNamed(context, '/home').then(onGoBack);
         } on FirebaseAuthException catch  (e) {

@@ -55,9 +55,11 @@ class PublicProfile extends StatelessWidget {
                               radius: 50,
                               child: Text(""),
                             ),
-                            Column(
+                            Flexible(
+                              child: Column(
                               children: <Widget>[
-                                Text(
+                                FittedBox(
+                                  child: Text(
                                   userName,
                                   style: TextStyle(
                                       fontSize: 28,
@@ -73,7 +75,7 @@ class PublicProfile extends StatelessWidget {
                                             offset: Offset(1, .5),
                                             blurRadius: 10)
                                       ]),
-                                ),
+                                ),),
                                 Padding(
                                     padding: EdgeInsets.symmetric(vertical: 4)),
                                 Row(
@@ -153,7 +155,7 @@ class PublicProfile extends StatelessWidget {
                                             blurRadius: 10)
                                       ]),),
                               ],
-                            ),
+                            ),),
                           ],
                         ),
                       ),

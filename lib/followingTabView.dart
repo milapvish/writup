@@ -38,7 +38,26 @@ class FollowingTabViewState extends State<FollowingTabView> with AutomaticKeepAl
           return Center(child: CircularProgressIndicator(color: Colors.black54,));
         } else {
           if (snapshot.hasError)
-            return Center(child: Text('Error: ${snapshot.error}'));
+            return Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text("Network Error"),
+                  Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+                  IconButton(
+                    onPressed: () async {
+                      var temp = await fetchArticles();
+                      setState(() {
+                        data = temp;
+                      });
+                    },
+                    icon: Icon(Icons.refresh_rounded,
+                      size: 40,
+                      color: Colors.black54,),
+                  )
+                ],),
+            );
           else
             print('i am here in following');
           //print(snapshot.data[1][4]);

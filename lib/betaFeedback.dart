@@ -27,6 +27,7 @@ class BetaFeedbackState extends State<BetaFeedback> {
 
   ImagePicker picker = ImagePicker();
   var image;
+  bool screenShotPresent = false;
   @override
   Widget build(BuildContext context) {
     _isPostingNotifier.value = false;
@@ -94,9 +95,10 @@ class BetaFeedbackState extends State<BetaFeedback> {
             ElevatedButton(
               onPressed: () async {
                 image = await picker.pickImage(source: ImageSource.gallery, imageQuality: 90, maxHeight: 512, maxWidth: 512);
+                screenShotPresent = true;
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.orangeAccent,
+                backgroundColor: Colors.orangeAccent,
               ),
               child: Text("Screenshots",
               style: TextStyle(
@@ -114,8 +116,11 @@ class BetaFeedbackState extends State<BetaFeedback> {
               _isPostingNotifier.value = true;
               final storageRef = FirebaseStorage.instance.ref();
               final testImagesRef = storageRef.child("betaFeedbackScreenshots/" + DateTime.now().millisecondsSinceEpoch.toString() + ".jpeg");
-              testImagesRef.putFile(File(image!.path));
+              if (screenShotPresent == true) {
+                testImagesRef.putFile(File(image!.path));
+              }
               await postFeedback(newFeedback);
+              _isPostingNotifier.value = false;
               final snackBar = SnackBar(
                 content: const Text('Your feedback has been submitted'),
                 backgroundColor: (Colors.black87),

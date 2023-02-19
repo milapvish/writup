@@ -6,6 +6,7 @@ import 'apiCalls.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MyDrawer extends StatelessWidget {
@@ -107,7 +108,8 @@ class MyDrawer extends StatelessWidget {
                             ),
                             Padding(
                                 padding: EdgeInsets.symmetric(vertical: 10)),
-                            Text(
+                            FittedBox(
+                      child: Text(
                               snapshot.data[1][2],
                               style: TextStyle(
                                   fontSize: 24,
@@ -123,7 +125,7 @@ class MyDrawer extends StatelessWidget {
                                         offset: Offset(1, .5),
                                         blurRadius: 10)
                                   ]),
-                            ),
+                            ),),
                             Padding(padding: EdgeInsets.symmetric(vertical: 3)),
                             FittedBox(
                               child: Align(
@@ -322,7 +324,7 @@ class MyDrawer extends StatelessWidget {
             ),
             onTap: () {
               print("edit profile");
-              //Navigator.pushNamed(context, '/login');
+              Navigator.pushNamed(context, '/editProfile');
             },
           ),
           ListTile(

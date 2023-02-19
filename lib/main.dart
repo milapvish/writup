@@ -17,6 +17,7 @@ import 'search.dart';
 import 'viewNotifications.dart';
 import 'reportArticle.dart';
 import 'betaFeedback.dart';
+import 'editProfile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -81,6 +82,7 @@ class MyApp extends StatelessWidget {
         '/createArticleDetail': (context) => CreateArticleDetail(),
         '/reportArticle': (context) => ReportArticle(),
         '/betaFeedback': (context) => BetaFeedback(),
+        '/editProfile': (context) => EditProfile(),
       },
       theme: ThemeData(
         primarySwatch: Colors.brown,
@@ -334,6 +336,7 @@ class CreateArticleState extends State<CreateArticle> {
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: SizedBox(
                 height: 220,
+                width: MediaQuery.of(context).size.width,
                 child: TextFormField(
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -343,8 +346,9 @@ class CreateArticleState extends State<CreateArticle> {
                     //String? inpHtml = await controller.getText();
                     return null;
                   },
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText: "An interesting heading",
+                    hintMaxLines: 2,
                     border: InputBorder.none,
                   ),
                   style: const TextStyle(fontSize: 32),
@@ -369,6 +373,7 @@ class CreateArticleState extends State<CreateArticle> {
                   },
                   decoration: const InputDecoration(
                     hintText: "Add a sub-heading (optional)",
+                    hintMaxLines: 2,
                     border: InputBorder.none,
                   ),
                   style: const TextStyle(fontSize: 24),
@@ -400,6 +405,7 @@ class CreateArticleState extends State<CreateArticle> {
                     return null;
                   },
                   decoration: const InputDecoration(
+                    hintMaxLines: 2,
                     hintText:
                         "Up to 5 tags (e.g #news #hollywood #morganfreeman)",
                     border: InputBorder.none,
@@ -429,6 +435,7 @@ class CreateArticleState extends State<CreateArticle> {
                         blurRadius: 10)
                   ]),
             ),
+            Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           ]),
         ),
         floatingActionButton: FloatingActionButton(
