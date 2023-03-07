@@ -33,6 +33,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_quill/flutter_quill.dart' hide Text;
 import 'package:vsc_quill_delta_to_html/vsc_quill_delta_to_html.dart';
+import 'package:app_links/app_links.dart';
 
 //HtmlEditorController htmlcontroller = HtmlEditorController();
 String jwtGlobal = '';
@@ -42,15 +43,17 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  //var test = fetchArtList();
+  //var test = fetchArtList();;
 
   @override
   Widget build(BuildContext context) {
     Widget firstWidget;
+
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       print("already logged in");
@@ -101,6 +104,65 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // Deep Linking Code
+    late AppLinks _appLinks;
+    StreamSubscription<Uri>? _linkSubscription;
+
+    print("before deep link init");
+
+    var appLink;
+    Future<void> initDeepLinks() async {
+      print("inside deep link init");
+      _appLinks = AppLinks();
+
+      // Check initial link if app was in cold state (terminated)
+      appLink = await _appLinks.getInitialAppLink();
+      print('getInitialAppLink: $appLink');
+      if (appLink != null) {
+        print('getInitialAppLink: $appLink');
+        String? postId = appLink.queryParameters['post_id'];
+        if (postId != null) {
+          var articleList = await fetchArticleByPostID(int.parse(postId));
+          if (articleList.length > 1) {
+            Navigator.pushNamed(
+              context,
+              '/viewArticle',
+              arguments: {
+                'articleList': articleList,
+                'thisIndex': 0,
+              },
+            );
+          }
+        }
+      }
+
+      // Handle link when app is in warm state (front or background)
+      _linkSubscription = _appLinks.uriLinkStream.listen((uri) async {
+        print('onAppLink: $uri');
+        String? postId = uri.queryParameters['post_id'];
+        print("post ID");
+        print(postId);
+
+        if (postId != null) {
+          var articleList = await fetchArticleByPostID(int.parse(postId));
+          if (articleList.length > 1) {
+            Navigator.pushNamed(
+              context,
+              '/viewArticle',
+              arguments: {
+                'articleList': articleList,
+                'thisIndex': 0,
+              },
+            );
+          }
+        }
+      });
+    }
+
+    initDeepLinks();
+    print("after deep link init");
+
     // Below timer only runs once to fetch notif count initially
     final periodicTimer = Timer.periodic(
       const Duration(seconds: 1),
