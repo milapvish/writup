@@ -6,6 +6,8 @@ import 'package:html/dom.dart' as dom;
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
+import 'consts.dart';
 
 class ViewArticle extends StatefulWidget {
   //const ViewArticle({super.key});
@@ -405,30 +407,8 @@ class ViewArticleState extends State<ViewArticle> {
                           ),
                           IconButton(
                             onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Unavailable"),
-                                    content:
-                                    Text("Share not available in closed Beta"),
-                                    actions: <Widget>[
-                                      ElevatedButton(
-                                        child: Text("OK"),
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        style: ElevatedButton.styleFrom(
-                                          //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                                          shape: StadiumBorder(),
-                                          backgroundColor: Colors.black54,
-                                          minimumSize: Size(50, 35),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              String post_url = basePostShareUrl + articleList[itemIndex + 1][0].toString();
+                              Share.share(post_url, subject: 'Check out this Writup!');
                             },
                             icon: Icon(
                               Icons.share_rounded,
@@ -695,30 +675,8 @@ class ViewArticleState extends State<ViewArticle> {
                           ),
                   IconButton(
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Unavailable"),
-                            content:
-                            Text("Share not available in closed Beta"),
-                            actions: <Widget>[
-                              ElevatedButton(
-                                child: Text("OK"),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                                  shape: StadiumBorder(),
-                                  backgroundColor: Colors.black54,
-                                  minimumSize: Size(50, 35),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      String post_url = basePostShareUrl + articleList[itemIndex + 1][0].toString();
+                      Share.share(post_url, subject: 'Check out this Writup!');
                     },
                     icon: Icon(
                       Icons.share_rounded,

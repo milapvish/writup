@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.writup">
    <application
+        android:allowBackup="false"
         android:label="Writup"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
@@ -31,13 +32,22 @@
             </intent-filter>
 
             <!-- Deep Link sample -->
-            <intent-filter>
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Add optional android:host to distinguish your app
                      from others in case of conflicting scheme name -->
                 <data android:scheme="https" android:host="writupserver.in" />
+                <!-- <data android:scheme="sample" /> -->
+            </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Add optional android:host to distinguish your app
+                     from others in case of conflicting scheme name -->
+                <data android:scheme="https" android:host="writup.in" />
                 <!-- <data android:scheme="sample" /> -->
             </intent-filter>
         </activity>

@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
+import 'consts.dart';
 
 class ArticleListViewCommon extends StatelessWidget {
   var articleList;
@@ -414,30 +416,8 @@ class ArticleListViewCommon extends StatelessWidget {
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text("Unavailable"),
-                                          content:
-                                              Text("Share not available in closed Beta"),
-                                          actions: <Widget>[
-                                            ElevatedButton(
-                                              child: Text("OK"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                                                shape: StadiumBorder(),
-                                                backgroundColor: Colors.black54,
-                                                minimumSize: Size(50, 35),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    String post_url = basePostShareUrl + articleList[index + 1][0].toString();
+                                    Share.share(post_url, subject: 'Check out this Writup!');
                                   },
                                   icon: Icon(
                                     Icons.share_rounded,
@@ -517,30 +497,8 @@ class ArticleListViewCommon extends StatelessWidget {
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text("Unavailable"),
-                                          content:
-                                          Text("Share not available in closed Beta"),
-                                          actions: <Widget>[
-                                            ElevatedButton(
-                                              child: Text("OK"),
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                //padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
-                                                shape: StadiumBorder(),
-                                                backgroundColor: Colors.black54,
-                                                minimumSize: Size(50, 35),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    String post_url = basePostShareUrl + articleList[index + 1][0].toString();
+                                    Share.share(post_url, subject: 'Check out this Writup!');
                                   },
                                   icon: Icon(
                                     Icons.share_rounded,
